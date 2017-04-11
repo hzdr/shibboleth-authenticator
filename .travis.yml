@@ -15,3 +15,25 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+language: python
+
+python:
+  - "3.5"
+
+env:
+  - REQUIREMENTS=lowest EXTRAS=all
+  - REQUIREMENTS=release EXTRAS=all
+
+before_install:
+  - "travis_retry pip install --upgrade pip setuptools py"
+  - "travis_retry pip install coveralls requirements-builder"
+  - "requirements-builder -e $EXTRAS --level=min setup.py > .travis-lowest-requirements.txt"
+  - "requirements-builder -e $EXTRAS --level=pypi setup.py > .travis-release-requirements.txt"
+
+install:
+  - "travis_retry pip install -r .travis-${REQUIREMENTS}"
+  - "travis_retry pip install -e .[${EXTRAS}]"
+
+- script:
+  - "./run-tests.sh"
