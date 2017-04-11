@@ -1,6 +1,6 @@
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/tobiasfrust/shibboleth-authenticator.svg?branch=dev)
-[![Coverage Status](https://coveralls.io/repos/github/tobiasfrust/shibboleth-authenticator/badge.svg?branch=dev)](https://coveralls.io/github/tobiasfrust/shibboleth-authenticator?branch=dev)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+[![Travis branch](https://img.shields.io/travis/tobiasfrust/shibboleth-authenticator/dev.svg)](https://travis-ci.org/tobiasfrust/shibboleth-authenticator)
+[![Coveralls branch](https://img.shields.io/coveralls/tobiasfrust/shibboleth-authenticator/dev.svg)](https://coveralls.io/github/tobiasfrust/shibboleth-authenticator)
+[![license](https://img.shields.io/github/license/tobiasfrust/shibboleth-authenticator.svg)](https://github.com/tobiasfrust/shibboleth-authenticator/blob/master/LICENSE)
 
 # Shibboleth Authenticator
 Module for Invenio that provides authentication via shibboleth.
