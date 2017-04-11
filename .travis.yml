@@ -35,8 +35,8 @@ install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[${EXTRAS}]"
 
-- script:
+script:
   - "./run-tests.sh"
 
-  after_sucess:
-    - coveralls
+after_success:
+  - coveralls
