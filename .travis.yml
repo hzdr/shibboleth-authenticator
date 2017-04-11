@@ -32,6 +32,7 @@ before_install:
   - "requirements-builder -e $EXTRAS --level=pypi setup.py > .travis-release-requirements.txt"
 
 install:
+  - sudo apt-get install libxml2-dev libxmlsec1-dev
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[${EXTRAS}]"
 
