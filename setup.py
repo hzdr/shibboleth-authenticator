@@ -26,7 +26,10 @@ readme = open('README.md').read()
 history = open('CHANGES.md').read()
 
 tests_require = [
-
+    'check_manifest>=0.35',
+    'coverage>=4.0',
+    'isort>=4.2.5',
+    'pydocstyle>=1.1.1',
 ]
 
 setup_requires = [
@@ -37,9 +40,8 @@ install_requires = [
     'python3-saml>=1.2.3',
 ]
 
-extras_require = [
-
-]
+extras_require = {}
+extras_require['all'] = []
 
 packages = find_packages()
 
