@@ -37,7 +37,7 @@ install:
   - "travis_retry pip install -e .[${EXTRAS}]"
 
 script:
-  - "./run-tests.sh"
+  - "sh run-tests.sh"
 
 after_success:
   - coveralls
