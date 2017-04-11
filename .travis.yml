@@ -32,8 +32,11 @@ before_install:
   - "requirements-builder -e $EXTRAS --level=pypi setup.py > .travis-release-requirements.txt"
 
 install:
-  - "travis_retry pip install -r .travis-${REQUIREMENTS}"
+  - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[${EXTRAS}]"
 
 - script:
   - "./run-tests.sh"
+
+  after_sucess:
+    - coveralls
