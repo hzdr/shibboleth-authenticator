@@ -37,7 +37,11 @@ setup_requires = [
 ]
 
 install_requires = [
+    'Flask>=0.11.1',
     'python3-saml>=1.2.3',
+    'invenio-base>=1.0.0a9',
+    'invenio-oauthclient>=1.0.0a12',
+    'uritools>=1.0.1',
 ]
 
 extras_require = {}
@@ -66,7 +70,10 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
-
+        'invenio_base.blueprints': [
+            'shibboleth-authenticator = '
+            'shibboleth_authenticator.views.blueprint',
+        ]
     },
     extras_require=extras_require,
     install_requires=install_requires,
