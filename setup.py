@@ -93,11 +93,11 @@ setup(
     platforms='any',
     entry_points={
         'invenio_base.apps': [
-            'shibboleth-authenticator = '
+            'shibboleth_authenticator = '
             'shibboleth_authenticator.ext:ShibbolethAuthenticator',
         ],
         'invenio_base.blueprints': [
-            'shibboleth-authenticator = '
+            'shibboleth_authenticator = '
             'shibboleth_authenticator.views:blueprint',
         ]
     },
