@@ -28,6 +28,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from werkzeug.local import LocalProxy
 
+from .handlers import authorized_signup_handler
+
 blueprint = Blueprint(
     'shibboleth-authenticator',
     __name__,
@@ -98,6 +100,7 @@ def authorized(remote_app=None):
     auth.process_response()
     errors = auth.get_errors()
     if len(errors) == 0 and auth.is_authenticated():
+        authorized_signup_handler(auth)
         return redirect('/')
     return redirect('/')
 
