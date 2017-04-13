@@ -15,3 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+pydocstyle shibboleth_authenticator tests && \
+isort -rc -c -df **/*.py && \
+py.test tests/

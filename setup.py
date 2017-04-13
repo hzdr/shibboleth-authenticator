@@ -30,6 +30,10 @@ tests_require = [
     'coverage>=4.0',
     'isort>=4.2.5',
     'pydocstyle>=1.1.1',
+    'pytest-cache>=1.0',
+    'pytest-cov>=1.8.0',
+    'pytest-pep8>=1.0.6',
+    'pytest>=2.8.0',
 ]
 
 setup_requires = [
@@ -44,8 +48,26 @@ install_requires = [
     'uritools>=1.0.1',
 ]
 
-extras_require = {}
+extras_require = {
+    'docs': [
+        'Sphinx>=1.5.1',
+    ],
+    'mysql': [
+        'invenio-oauthclient[mysql]>1.0.0a12',
+    ],
+    'postgresql': [
+        'invenio-oauthclient[postgresql]>=1.0.0a12',
+    ],
+    'sqlite': [
+        'invenio-oauthclient[sqlite]>=1.0.0a12',
+    ],
+    'tests': tests_require,
+}
 extras_require['all'] = []
+for name, reqs in extras_require.items():
+    if name in ('mysql', 'postgresql', 'sqlite'):
+        continue
+    extras_require['all'].extend(reqs)
 
 packages = find_packages()
 
@@ -70,6 +92,10 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
+        'invenio_base.apps': [
+            'shibboleth-authenticator = '
+            'shibboleth_authenticator.ext:ShibbolethAuthenticator',
+        ],
         'invenio_base.blueprints': [
             'shibboleth-authenticator = '
             'shibboleth_authenticator.views.blueprint',

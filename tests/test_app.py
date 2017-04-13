@@ -15,32 +15,32 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-# Example configuration:
-# SHIBBOLETH_REMOTE_APPS = {
-#   'hzdr': {
-#       'saml_path': '...',
-#       'mapping': {
-#           'email': 'urn:oid:0.9.2342.19200300.100.1.3',
-#           'fullname': 'urn:oid:2.16.840.1.113730.3.1.241',
-#           'username': 'urn:oid:1.3.6.1.4.1.5923.1.1.1.6',
-#       }
-#       'id': '12345'
-#   }
-# }
 
-"""
-The shibbolet-authenticator module for Invenio offers Shibboleth/SAML support.
-
-It uses the Python-SAML-Toolkit (https://github.com/onelogin/python3-saml).
-
-"""
+"""Test helpers."""
 
 
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import
 
-from .version import __version__
+import pytest
+from flask import Flask
 
-__all__ = (
-    '__version__',
-)
+from shibboleth_authenticator.ext import ShibbolethAuthenticator
+
+
+def test_version():
+    """Test version import."""
+    from shibboleth_authenticator import __version__
+    assert __version__
+
+
+def test_init():
+    """Test extension initialization."""
+    app = Flask('testapp')
+    ext = ShibbolethAuthenticator(app)
+    assert 'shibboleth-authenticator' in app.extensions
+
+    app = Flask('testapp')
+    ext = ShibbolethAuthenticator()
+    assert 'shibboleth-authenticator' not in app.extensions
+    ext.init_app(app)
+    assert 'shibboleth-authenticator' in app.extensions
