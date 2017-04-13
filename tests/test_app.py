@@ -24,7 +24,7 @@ from __future__ import absolute_import
 import pytest
 from flask import Flask
 
-from shibboleth_authenticator.ext import ShibbolethAuthenticator
+from shibboleth_authenticator import ShibbolethAuthenticator
 
 
 def test_version():

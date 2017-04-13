@@ -39,8 +39,10 @@ It uses the Python-SAML-Toolkit (https://github.com/onelogin/python3-saml).
 
 from __future__ import absolute_import, print_function
 
+from .ext import ShibbolethAuthenticator
 from .version import __version__
 
 __all__ = (
     '__version__',
+    'ShibbolethAuthenticator',
 )
