@@ -31,7 +31,7 @@ from werkzeug.local import LocalProxy
 from .handlers import authorized_signup_handler
 
 blueprint = Blueprint(
-    'shibboleth-authenticator',
+    'shibboleth_authenticator',
     __name__,
     url_prefix='/shibboleth',
 )
