@@ -98,7 +98,7 @@ setup(
         ],
         'invenio_base.blueprints': [
             'shibboleth-authenticator = '
-            'shibboleth_authenticator.views.blueprint',
+            'shibboleth_authenticator.views:blueprint',
         ]
     },
     extras_require=extras_require,
