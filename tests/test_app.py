@@ -21,7 +21,6 @@
 
 from __future__ import absolute_import
 
-import pytest
 from flask import Flask
 
 from shibboleth_authenticator import ShibbolethAuthenticator
@@ -44,3 +43,6 @@ def test_init():
     assert 'shibboleth-authenticator' not in app.extensions
     ext.init_app(app)
     assert 'shibboleth-authenticator' in app.extensions
+
+    # Check if configurations is read properly.
+    assert 'SHIBBOLETH_REMOTE_APPS' in app.config
