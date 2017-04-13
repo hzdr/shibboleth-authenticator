@@ -17,3 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """Configuration variables for service provider."""
+
+SHIBBOLETH_REMOTE_APPS = {}
+"""Configuration of remote applications."""
