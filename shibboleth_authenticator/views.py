@@ -45,10 +45,8 @@ serializer = LocalProxy(
 )
 
 
-def init_saml_auth(req, remote_app, saml_path):
+def init_saml_auth(req, saml_path):
     """Init SAML authentication for remote application."""
-    if remote_app not in current_app.config:
-        return None
     auth = OneLogin_Saml2_Auth(
         req,
         custom_base_path=saml_path
