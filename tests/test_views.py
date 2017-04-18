@@ -82,6 +82,18 @@ def test_login(views_fixture):
         assert resp.status_code == 500
 
 
+def test_redirect_uri(views_fixture):
+    """Test redirect uri."""
+    app = views_fixture
+    with app.test_client() as client:
+        # Test redirect
+        _valid_configuration(app)
+        resp = client.get(
+            url_for('shibboleth_authenticator.login', remote_app='idp')
+        )
+        assert resp.status_code == 302
+
+
 def test_authorized(views_fixture):
     """Test authorized view."""
     app = views_fixture
