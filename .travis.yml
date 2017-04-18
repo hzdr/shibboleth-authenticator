@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 addons:
+  postgresql: 9.4
   apt:
     packages:
     - libxml2-dev
