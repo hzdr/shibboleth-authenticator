@@ -29,6 +29,7 @@ from flask import (current_app, flash, redirect, render_template, request,
 from flask_babelex import gettext as _
 from flask_login import current_user
 from flask_security.registerable import register_user
+from invenio_db import db
 from invenio_oauthclient.errors import (AlreadyLinkedError, OAuthClientError,
                                         OAuthError, OAuthRejectedRequestError,
                                         OAuthResponseError)
@@ -40,8 +41,6 @@ from invenio_oauthclient.utils import (disable_csrf, fill_form,
                                        registrationform_cls)
 from werkzeug.local import LocalProxy
 from werkzeug.utils import import_string
-
-from invenio_db import db
 
 from .utils import get_account_info
 
