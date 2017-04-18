@@ -1,0 +1,120 @@
+{
+    "strict": false,
+    "debug": true,
+    "sp": {
+        "entityId": "https://test/shibboleth",
+        "assertionConsumerService": {
+            "url": "https://test/shibboleth/login?acs",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        },
+        "singleLogoutService": {
+            "url": "https://test/shibboleth/login?sls",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+        },
+        "attributeConsumingService": {
+            "serviceName": "Test service",
+            "serviceDescription": "Test Service",
+            "requestedAttributes": [
+            {
+                "name": "urn:mace:dir:attribute-def:eduPersonTargetedID",
+                "isRequired": true,
+                "nameFormat": "urn:mace:shibboleth:1.0:attributeNamespace:uri",
+                "friendlyName": "eduPersonTargetedID"
+            },
+            {
+                "name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.10",
+                "isRequired": true,
+                "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:uri",
+                "friendlyName": "eduPersonTargetedID"
+            },
+            {
+                "name": "urn:mace:dir:attribute-def:surname",
+                "isRequired": false,
+                "nameFormat": "urn:mace:shibboleth:1.0:attributeNamespace:uri",
+                "friendlyName": "surname"
+            },
+            {
+                "name": "urn:oid:2.5.4.4",
+                "isRequired": false,
+                "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:uri",
+                "friendlyName": "surname"
+            },
+            {
+                "name": "urn:mace:dir:attribute-def:mail",
+                "isRequired": true,
+                "nameFormat": "urn:mace:shibboleth:1.0:attributeNamespace:uri",
+                "friendlyName": "mail"
+            },
+            {
+                "name": "urn:oid:0.9.2342.19200300.100.1.3",
+                "isRequired": true,
+                "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:uri",
+                "friendlyName": "mail"
+            },
+            {
+                "name": "urn:mace:dir:attribute-def:displayName",
+                "isRequired": true,
+                "nameFormat": "urn:mace:shibboleth:1.0:attributeNamespace:uri",
+                "friendlyName": "displayName"
+            },
+            {
+                "name": "urn:oid:2.16.840.1.113730.3.1.241",
+                "isRequired": true,
+                "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:uri",
+                "friendlyName": "displayName"
+            },
+            {
+                "name": "urn:mace:dir:attribute-def:eduPersonPrincipalName",
+                "isRequired": true,
+                "nameFormat": "urn:mace:shibboleth:1.0:attributeNamespace:uri",
+                "friendlyName": "eduPersonPrincipalName"
+            },
+            {
+                "name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.6",
+                "isRequired": true,
+                "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:uri",
+                "friendlyName": "eduPersonPrincipalName"
+            },
+            {
+                "name": "urn:mace:dir:attribute-def:eduPersonNickname",
+                "isRequired": true,
+                "nameFormat": "urn:mace:shibboleth:1.0:attributeNamespace:uri",
+                "friendlyName": "eduPersonNickname"
+            },
+            {
+                "name": "urn:oid:1.3.6.1.4.1.5923.1.1.1.2",
+                "isRequired": true,
+                "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:uri",
+                "friendlyName": "eduPersonNickname"
+            },
+            {
+                "name": "urn:mace:dir:attribute-def:organizationalUnit",
+                "isRequired": true,
+                "nameFormat": "urn:mace:shibboleth:1.0:attributeNamespace:uri",
+                "friendlyName": "organizationalUnit"
+            },
+            {
+                "name": "urn:oid:2.5.4.11",
+                "isRequired": true,
+                "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:uri",
+                "friendlyName": "organizationalUnit"
+            }
+            ]
+        },
+        "NameIDFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+        "x509cert": "",
+        "privateKey": ""
+    },
+    "idp": {
+        "entityId": "https://idp.test.de/idp/shibboleth",
+        "singleSignOnService": {
+            "url": "https://idp.test.de/idp/profile/SAML2/Redirect/SSO",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+        },
+        "singleLogoutService": {
+            "url": "https://idp.test.de/idp/profile/SAML2/Redirect/SLO",
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+        },
+        "x509cert": "MIIDBjCCAe4CCQD3ssLGjsO5fDANBgkqhkiG9w0BAQsFADBFMQswCQYDVQQGEwJERTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMB4XDTE3MDQxODExMzk0NVoXDTE4MDQxODExMzk0NVowRTELMAkGA1UEBhMCREUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMQ27OYaVcwWf9FSHqY0iIPweFPQjZamK/kOrIqkm9BsZuxV2MysDPqhb5VJ7sNIDrMiy3VPmG+zPlfhDlBW2ITxkQHF5Oeh0OlbKFAKqdtb4tfam+KKuYOFcXCSb+/QjKy0FebRXL7qfdv5mNsBa6FVxehZ5YrmT87CKIHlVf3oewx3iqnvYgB0FabBxE/QQHSgorTPbF0grVaNMuT9pwa/hMf0bKJYToGZ5zUcHpvYAOBaE4sE9kV+zKnXP6KSzSUzrEGkhIQvMUCsrNKxKQdTqtlsSteDsHXvFXAbG0t46iH8ecoRwryeLZbW3OWzOCRD7hpZ/OKOY+1r3jb6738CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAm+8aeuLdlbLrGqzJ1TO17UzZDrJpjm/wS63LTzjw8/saM8VNiyl1/On64X/d4b/n+KBgC6C/mSjLv36z9pivxuBHi78OifGQHQTwBmkie/IqqaXS5SHkd8lqRq/kKhapQpA3JGcyQgKWaM7kCmBO263hgePbdFGTGRRp114Zw8Xuf+tVzTzOPmN6diaxY6FpUCPWEaxsjDhKpGKbNmmyPkfzpSVWcu3v+VoJbI6viIz8WedmJ1WFe8j2Q9O1pzuCxNU1fA4tt4qSNHVf2sZ5yqZ3a5ebQlfeK3GvOSk86HVjRAhcuWs43KaDSJ3V+UR4tcCffv8B93Dzu6lX4ludyQ=="
+    }
+}
