@@ -18,4 +18,5 @@
 
 pydocstyle shibboleth_authenticator tests && \
 isort -rc -c -df **/*.py && \
+check-manifest --ignore ".travis-*" && \
 py.test tests/
