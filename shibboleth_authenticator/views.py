@@ -23,7 +23,7 @@ from __future__ import absolute_import, print_function
 from flask import (Blueprint, abort, current_app, make_response, redirect,
                    request)
 from itsdangerous import TimedJSONWebSignatureSerializer
-from onelogin.saml2.auth import OneLogin_Saml2_Auth
+from onelogin.saml2.auth import OneLogin_Saml2_Auth, OneLogin_Saml2_Error
 from werkzeug.local import LocalProxy
 
 from .handlers import authorized_signup_handler
@@ -32,7 +32,6 @@ try:
     from urllib.parse import urlparse
 except ImportError:
     from urlparse import urlparse
-
 
 
 blueprint = Blueprint(
@@ -80,12 +79,15 @@ def login(remote_app):
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
-    if 'SAML_PATH' not in conf:
-        return abort(404)
-    saml_path = conf['SAML_PATH']
+    if 'saml_path' not in conf:
+        return abort(500, 'Bad server configuration.')
+    saml_path = conf['saml_path']
     req = prepare_flask_request(request)
-    auth = init_saml_auth(req, saml_path)
-
+    try:
+        auth = init_saml_auth(req, saml_path)
+    except OneLogin_Saml2_Error:
+        return abort(500)
+        
     return redirect(auth.login())
 
 
@@ -95,10 +97,13 @@ def authorized(remote_app=None):
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
-    if 'SAML_PATH' not in conf:
-        return abort(404)
+    if 'saml_path' not in conf:
+        return abort(500, 'Bad server configuration.')
     req = prepare_flask_request(request)
-    auth = init_saml_auth(req, conf['SAML_PATH'])
+    try:
+        auth = init_saml_auth(req, conf['saml_path'])
+    except OneLogin_Saml2_Error:
+        return abort(500)
     errors = []
     auth.process_response()
     errors = auth.get_errors()
@@ -114,10 +119,14 @@ def metadata(remote_app):
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
-    if 'SAML_PATH' not in conf:
-        return abort(404)
+    if 'saml_path' not in conf:
+        return abort(500, 'Bad server configuration.')
     req = prepare_flask_request(request)
-    auth = init_saml_auth(req, conf['SAML_PATH'])
+    try:
+        auth = init_saml_auth(req, conf['saml_path'])
+    except OneLogin_Saml2_Error:
+        return abort(500)
+
     settings = auth.get_settings()
     metadata = settings.get_sp_metadata()
     errors = settings.validate_metadata(metadata)
