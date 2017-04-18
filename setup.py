@@ -28,6 +28,8 @@ history = open('CHANGES.md').read()
 tests_require = [
     'check_manifest>=0.35',
     'coverage>=4.0',
+    'invenio-accounts>=1.0.0b1',
+    'invenio-userprofiles>=1.0.0a9',
     'isort>=4.2.5',
     'pydocstyle>=1.1.1',
     'pytest-cache>=1.0',
@@ -44,7 +46,6 @@ install_requires = [
     'Flask>=0.11.1',
     'python3-saml>=1.2.3',
     'invenio-base>=1.0.0a9',
-    'invenio-oauthclient>=1.0.0a12',
     'uritools>=1.0.1',
 ]
 

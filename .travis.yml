@@ -16,18 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-notifications:
-  email: false
-
-sudo: false
-
-language: python
-
 addons:
   apt:
     packages:
     - libxml2-dev
     - libxmlsec1-dev
+
+notifications:
+  email: false
+
+sudo: false
+
+services:
+  - mysql
+  - postgresql
+
+language: python
 
 python:
   - "2.7"
@@ -37,14 +41,20 @@ cache:
   - pip
 
 env:
-  - REQUIREMENTS=lowest EXTRAS=all
-  - REQUIREMENTS=release EXTRAS=all
+  - REQUIREMENTS=lowest EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
+  - REQUIREMENTS=lowest EXTRAS=all,mysql SQLALCHEMY_DATABASE_URI="mysql+pymysql://travis@localhost:3306/invenio"
+  - REQUIREMENTS=lowest EXTRAS=all,postgresql SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/invenio"
+  - REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
+  - REQUIREMENTS=release EXTRAS=all,mysql SQLALCHEMY_DATABASE_URI="mysql+pymysql://travis@localhost:3306/invenio"
+  - REQUIREMENTS=release EXTRAS=all,postgresql SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/invenio"
 
 before_install:
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install coveralls requirements-builder"
   - "requirements-builder -e $EXTRAS --level=min setup.py > .travis-lowest-requirements.txt"
   - "requirements-builder -e $EXTRAS --level=pypi setup.py > .travis-release-requirements.txt"
+  - "mysql -e 'CREATE DATABASE IF NOT EXISTS invenio;' -uroot"
+  - "psql -c 'CREATE DATABASE invenio;' -U postgres"
 
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
