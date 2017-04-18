@@ -26,7 +26,7 @@ readme = open('README.md').read()
 history = open('CHANGES.md').read()
 
 tests_require = [
-    'check_manifest>=0.35',
+    'check-manifest>=0.35',
     'coverage>=4.0',
     'invenio-accounts>=1.0.0b1',
     'invenio-userprofiles>=1.0.0a9',
