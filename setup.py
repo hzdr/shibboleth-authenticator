@@ -54,7 +54,7 @@ extras_require = {
         'Sphinx>=1.5.1',
     ],
     'mysql': [
-        'invenio-oauthclient[mysql]>1.0.0a12',
+        'invenio-oauthclient[mysql]>=1.0.0a12',
     ],
     'postgresql': [
         'invenio-oauthclient[postgresql]>=1.0.0a12',
