@@ -20,8 +20,6 @@
 
 from __future__ import absolute_import, print_function
 
-from urllib.parse import urlparse
-
 from flask import (Blueprint, abort, current_app, make_response, redirect,
                    request)
 from itsdangerous import TimedJSONWebSignatureSerializer
@@ -29,6 +27,13 @@ from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from werkzeug.local import LocalProxy
 
 from .handlers import authorized_signup_handler
+
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
+
+
 
 blueprint = Blueprint(
     'shibboleth_authenticator',
