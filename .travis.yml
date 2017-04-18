@@ -19,6 +19,8 @@
 notifications:
   email: false
 
+sudo: false
+
 language: python
 
 python:
