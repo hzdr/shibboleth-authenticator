@@ -51,6 +51,7 @@ install_requires = [
 
 extras_require = {
     'docs': [
+        'recommonmark>=0.4.0',
         'Sphinx>=1.5.1',
     ],
     'mysql': [
