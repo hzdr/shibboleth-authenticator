@@ -18,3 +18,10 @@
 
 How to use
 ==========
+
+.. automodule:: shibboleth_authenticator
+
+Configuration
+-------------
+
+.. automodule:: shibboleth_authenticator.config

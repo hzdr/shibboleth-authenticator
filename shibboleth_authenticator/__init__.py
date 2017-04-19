@@ -15,25 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-# Example configuration:
-# SHIBBOLETH_REMOTE_APPS = {
-#   'hzdr': {
-#       'saml_path': '...',
-#       'mapping': {
-#           'email': 'urn:oid:0.9.2342.19200300.100.1.3',
-#           'fullname': 'urn:oid:2.16.840.1.113730.3.1.241',
-#           'username': 'urn:oid:1.3.6.1.4.1.5923.1.1.1.6',
-#       }
-#       'id': '12345'
-#   }
-# }
 
 """
-The shibbolet-authenticator module for Invenio offers Shibboleth/SAML support.
+Module for Invenio that provides authentication via shibboleth.
 
-It uses the Python-SAML-Toolkit (https://github.com/onelogin/python3-saml).
+The shibboleth-authenticator module for Invenio provides web authorization via
+the Shibboleth single sign-on system and allows people to sign in using just
+one identity to various systems run by federations of different organizations.
 
+This module is basing on `invenio-oauthclient
+<https://github.com/inveniosoftware/invenio-oauthclient>`_ and `python3-saml
+<https://github.com/onelogin/python3-saml>`_. It supports multiple
+Identity-Providers (IDPs) which can easily be configured via configuration
+parameters.
 """
 
 

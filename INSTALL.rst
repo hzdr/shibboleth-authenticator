@@ -24,3 +24,9 @@ Shibboleth-Authenticator module can be installed via PyPI from GitHub:
 .. code-block:: console
 
   $ pip install git+git://github.com/tobiasfrust/shibboleth-authenticator@master
+
+Or the latest development branch:
+
+.. code-block:: console
+
+  $ pip install git+git://github.com/tobiasfrust/shibboleth-authenticator@dev
