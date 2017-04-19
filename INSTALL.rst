@@ -19,6 +19,21 @@
 Installation
 ============
 
+Requirements
+--------------------
+
+The python3-saml module uses ``xmlsec``, which offers Python bindings for the
+XML Security Library. ``xmlsec`` depends on ``libxml2-dev`` and
+``libxmlsec1-dev``. These libraries can be installed via the package manager of
+your distribution. For Ubuntu use:
+
+.. code-block:: bash
+
+  $ sudo apt install libxml2-dev libxmlsec1-dev
+
+Shibboleth-Authenticator
+--------------------------------
+
 Shibboleth-Authenticator module can be installed via PyPI from GitHub:
 
 .. code-block:: console
