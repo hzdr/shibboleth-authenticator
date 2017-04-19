@@ -87,13 +87,13 @@ def login(remote_app):
         auth = init_saml_auth(req, saml_path)
     except OneLogin_Saml2_Error:
         return abort(500)
-        
+
     return redirect(auth.login())
 
 
 @blueprint.route('/authorized/<remote_app>')
 def authorized(remote_app=None):
-    """Authorized handler callback."""
+    """Authorize handler callback."""
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
