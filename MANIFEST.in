@@ -17,10 +17,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include *.md
+include *.rst
 include *.sh
 include *.txt
 include LICENSE
 include pytest.ini
+prune docs/build
+recursive-include docs *.py
+recursive-include docs *.rst
+recursive-include docs Makefile
 recursive-include shibboleth_authenticator *.html
 recursive-include shibboleth_authenticator *.mo
 recursive-include shibboleth_authenticator *.po
