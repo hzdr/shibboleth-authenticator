@@ -22,7 +22,7 @@ import os
 
 from setuptools import find_packages, setup
 
-readme = open('README.md').read()
+readme = open('README.rst').read()
 history = open('CHANGES.md').read()
 
 tests_require = [
