@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
 ]
 
@@ -223,6 +224,7 @@ intersphinx_mapping = {
     'invenio-oauthclient': ('https://pythonhosted.org/invenio-oauthclient/',
                             None),
     'invenio-accounts': ('https://pythonhosted.org/invenio-accounts', None),
+    'flask': ('https://flask.readthedocs.io/en/latest/', None),
 }
 
 

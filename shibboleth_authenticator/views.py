@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Module that adds shibboleth authentication to Invenio platform."""
+"""Blueprint for handling Shibboleth callbacks."""
 
 from __future__ import absolute_import, print_function
 
@@ -50,7 +50,16 @@ serializer = LocalProxy(
 
 
 def init_saml_auth(req, saml_path):
-    """Init SAML authentication for remote application."""
+    """
+    Init SAML authentication for remote application.
+
+    Args:
+        req(dict):
+        saml_path(str): The path to the configuration files for python3-saml.
+
+    Returns:
+
+    """
     auth = OneLogin_Saml2_Auth(
         req,
         custom_base_path=saml_path
@@ -59,7 +68,15 @@ def init_saml_auth(req, saml_path):
 
 
 def prepare_flask_request(request):
-    """Prepare flask request."""
+    """
+    Prepare flask request.
+
+    Args:
+        request(flask.request): The Flask request.
+    Returns:
+        dict: Returns dictionary used in :func:`init_saml_auth`.
+
+    """
     url_data = urlparse(request.url)
     # If server is behind proxys or balancers use the HTTP_X_FORWARDED fields.
     return {
@@ -75,7 +92,21 @@ def prepare_flask_request(request):
 
 @blueprint.route('/login/<remote_app>/')
 def login(remote_app):
-    """Send user to remote application for authentication."""
+    """
+    Redirect user to remote application for authentication.
+
+    This function redirects the user to the IdP for authorization. After having
+    authorized the IdP redirects the user back to this web application as
+    configured in your ``saml_path``.
+
+    Args:
+        remote_app (str): The remote application key name.
+
+    Returns:
+        flask.Response: Return redirect response to IdP or abort in case
+                        of failure.
+
+    """
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
@@ -93,7 +124,19 @@ def login(remote_app):
 
 @blueprint.route('/authorized/<remote_app>')
 def authorized(remote_app=None):
-    """Authorize handler callback."""
+    """
+    Authorize handler callback.
+
+    This function is called when the user is redirected from the IdP to the
+    web application. It handles the authorization.
+
+    Args:
+        remote_app (str): The remote application key name.
+
+    Returns:
+        flask.Response: Return redirect response or abort in case of failure.
+
+    """
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
@@ -115,7 +158,18 @@ def authorized(remote_app=None):
 
 @blueprint.route('/metadata/<remote_app>')
 def metadata(remote_app):
-    """Create remote application specific metadata xml for ServiceProvider."""
+    """
+    Create remote application specific metadata xml for ServiceProvider.
+
+    The metadata-XML response is created using the settings provided in the
+    remote app's specific ``saml_path``.
+
+    Args:
+        remote_app (str): The remote application key name.
+    Returns:
+        flask.Response: The SP's metadata xml.
+
+    """
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
