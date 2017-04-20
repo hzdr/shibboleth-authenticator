@@ -22,6 +22,7 @@
 from __future__ import absolute_import
 
 from flask import Flask
+
 from shibboleth_authenticator import ShibbolethAuthenticator
 
 

@@ -30,10 +30,11 @@ from flask_menu import Menu as FlaskMenu
 from invenio_accounts import InvenioAccounts
 from invenio_db import InvenioDB, db
 from invenio_userprofiles import UserProfile
-from shibboleth_authenticator import ShibbolethAuthenticator
-from shibboleth_authenticator.views import blueprint
 from sqlalchemy_utils.functions import (create_database, database_exists,
                                         drop_database)
+
+from shibboleth_authenticator import ShibbolethAuthenticator
+from shibboleth_authenticator.views import blueprint
 
 
 @pytest.fixture
@@ -51,6 +52,9 @@ def base_app(request):
                 title='HZDR Shibboleth Authentication',
                 saml_path='data/',
                 mappings=dict(
+                    email='email_mapping',
+                    user_unique_id='id_mapping',
+                    full_name='full_name_mapping',
                 )
             )
         ),
@@ -113,7 +117,7 @@ def models_fixture(app):
             active=True
         )
         datastore.create_user(
-            email='test2.hzdr.de',
+            email='test2@hzdr.de',
             password='tester',
             active=True
         )
