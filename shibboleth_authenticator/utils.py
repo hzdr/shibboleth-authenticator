@@ -20,12 +20,7 @@
 
 from __future__ import absolute_import, print_function
 
-import json
-
 from flask import current_app
-from invenio_accounts.models import User
-from invenio_oauthclient.models import UserIdentity
-from invenio_oauthclient.utils import _get_external_id
 from werkzeug.local import LocalProxy
 
 _security = LocalProxy(lambda: current_app.extensions['security'])
@@ -33,40 +28,22 @@ _security = LocalProxy(lambda: current_app.extensions['security'])
 _datastore = LocalProxy(lambda: _security.datastore)
 
 
-def get_account_info(attributes):
+def get_account_info(attributes, remote_app):
     """Return account info for remote user."""
+    mappings = current_app.config['SHIBBOLETH_REMOTE_APPS'][
+        remote_app]['mappings']
+    email = attributes[mappings['email']]
+    external_id = attributes[mappings['user_unique_id']]
+    full_name = attributes[mappings['full_name']]
+
     return dict(
         user=dict(
-            email=attributes[current_app.config['HZDR_EMAIL_ID']][0],
+            email=email,
             profile=dict(
-                full_name=attributes[current_app.config[
-                    'HZDR_FULLNAME_ID']][0],
-                username=attributes[
-                    current_app.config[
-                        'HZDR_USER_UNIQUE_ID']][0].split('@')[0],
+                full_name=full_name,
+                username=external_id.split('@')[0],
             ),
         ),
-        external_id=attributes[current_app.config['HZDR_USER_UNIQUE_ID']][0],
-        external_method=current_app.config['HZDR_EXTERNAL_METHOD'],
+        external_id=external_id,
+        external_method=remote_app,
     )
-
-
-def _get_email(account_info):
-    email = account_info[current_app.config['HZDR_EMAIL_ID']][0]
-    return email
-
-
-def oauth_get_user(client_id, account_info):
-    """Retrieve user object for the given request."""
-    if account_info:
-        external_id = _get_external_id(account_info)
-        current_app.logger.exception(json.dumps(external_id, indent=3))
-        if external_id:
-            user_identity = UserIdentity.query.filter_by(
-                id=external_id['id'], method=external_id['method']).first()
-            if user_identity:
-                return user_identity.user
-            email = _get_email(account_info)
-            if email:
-                return User.query.filter_by(email=email).one_or_none()
-    return None
