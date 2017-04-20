@@ -30,11 +30,10 @@ from flask_menu import Menu as FlaskMenu
 from invenio_accounts import InvenioAccounts
 from invenio_db import InvenioDB, db
 from invenio_userprofiles import UserProfile
-from sqlalchemy_utils.functions import (create_database, database_exists,
-                                        drop_database)
-
 from shibboleth_authenticator import ShibbolethAuthenticator
 from shibboleth_authenticator.views import blueprint
+from sqlalchemy_utils.functions import (create_database, database_exists,
+                                        drop_database)
 
 
 @pytest.fixture
