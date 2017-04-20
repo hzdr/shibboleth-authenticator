@@ -19,4 +19,6 @@
 pydocstyle shibboleth_authenticator tests && \
 isort -rc -c -df **/*.py && \
 check-manifest --ignore ".travis-*" && \
-py.test tests/
+sphinx-build -qnNW docs/source docs/build/html && \
+py.test tests/ && \
+sphinx-build -qnNW -b doctest docs/source docs/build/doctest
