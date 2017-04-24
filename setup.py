@@ -36,6 +36,7 @@ tests_require = [
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
     'pytest>=2.8.0',
+    'sphinx_rtd_theme>=0.2.4',
 ]
 
 setup_requires = [

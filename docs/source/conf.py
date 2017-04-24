@@ -21,6 +21,8 @@ from __future__ import print_function
 
 import os
 
+import sphinx_rtd_theme
+
 # -- General configuration ------------------------------------------------
 
 # Do not warn on external images.
@@ -97,23 +99,15 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
+
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-    'description': description,
-    'github_user': 'tobiasfrust',
-    'github_repo': 'shibboleth-authenticator',
-    'github_button': False,
-    'github_banner': True,
-    'show_powered_by': False,
-    'extra_nav_links': {
-        'shibboleth-authenticator@GitHub':
-            'https://github.com/tobiasfrust/shibboleth-authenticator'
-    }
 }
 
 
