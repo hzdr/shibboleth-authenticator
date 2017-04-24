@@ -55,7 +55,7 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
     :returns: Redirect response.
     """
     # Remove any previously stored auto register session key
-    session.pop(token_session_key(auth.get_nameid()) + '_autoregister', None)
+    session.pop(token_session_key(remote) + '_autoregister', None)
 
     # Sign-in/up user
     # ---------------
@@ -63,7 +63,7 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
         account_info = get_account_info(auth.get_attributes(), remote)
 
         user = oauth_get_user(
-            'hzdr_shibboleth',
+            remote,
             account_info=account_info
         )
         if user is None:
@@ -81,7 +81,7 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
                 return current_app.login_manager.unauthorized()
 
         # Authenticate user
-        if not oauth_authenticate('hzdr_shibboleth', user,
+        if not oauth_authenticate(remote, user,
                                   require_existing_link=False):
             return current_app.login_manager.unauthorized()
 
