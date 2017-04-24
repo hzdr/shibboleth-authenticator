@@ -17,6 +17,7 @@
 ..
 
 .. include:: ../../README.rst
+  :end-before: Developer documentation
 
 Contents
 --------

@@ -66,3 +66,12 @@ script:
 
 after_success:
   - coveralls
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: dev
+  local_dir: "docs/build/html"
+  target_branch: gh-pages
