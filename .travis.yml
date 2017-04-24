@@ -66,6 +66,8 @@ script:
 
 after_success:
   - coveralls
+
+before_deploy:
   - "touch docs/build/html/.nojekyll"
 
 deploy:
@@ -74,5 +76,7 @@ deploy:
   github_token: $GITHUB_TOKEN
   on:
     branch: dev
+    python: "3.5"
+    condition: "$EXTRAS = all,postgresql"
   local_dir: "docs/build/html"
   target_branch: gh-pages
