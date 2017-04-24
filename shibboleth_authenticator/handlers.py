@@ -57,16 +57,12 @@ def oauth_register(form):
     """
     if form.validate():
         data = form.to_dict()
-        current_app.logger.exception(json.dumps(data, indent=3))
         if not data.get('password'):
             data['password'] = ''
-        current_app.logger.exception(json.dumps(data, indent=3))
         user = register_user(**data)
-        current_app.logger.exception(user)
         if not data['password']:
             user.password = None
         _datastore.commit()
-        current_app.logger.exception(user)
         return user
 
 
@@ -309,7 +305,7 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
     # Sign-in/up user
     # ---------------
     if not current_user.is_authenticated:
-        account_info = get_account_info(auth.get_attributes())
+        account_info = get_account_info(auth.get_attributes(), remote)
 
         user = oauth_get_user(
             'hzdr_shibboleth',

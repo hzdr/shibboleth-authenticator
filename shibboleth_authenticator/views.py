@@ -90,7 +90,7 @@ def prepare_flask_request(request):
     }
 
 
-@blueprint.route('/login/<remote_app>/')
+@blueprint.route('/login/<remote_app>/', methods=['GET', 'POST'])
 def login(remote_app):
     """
     Redirect user to remote application for authentication.
@@ -122,7 +122,7 @@ def login(remote_app):
     return redirect(auth.login())
 
 
-@blueprint.route('/authorized/<remote_app>')
+@blueprint.route('/authorized/<remote_app>', methods=['GET', 'POST'])
 def authorized(remote_app=None):
     """
     Authorize handler callback.
@@ -151,7 +151,7 @@ def authorized(remote_app=None):
     auth.process_response()
     errors = auth.get_errors()
     if len(errors) == 0 and auth.is_authenticated():
-        authorized_signup_handler(auth)
+        authorized_signup_handler(auth, remote_app)
         return redirect('/')
     return redirect('/')
 

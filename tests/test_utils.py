@@ -26,9 +26,9 @@ from shibboleth_authenticator.utils import get_account_info
 
 def _attributes():
     return dict(
-        email_mapping='test@hzdr.de',
-        id_mapping='123456',
-        full_name_mapping='Test Tester',
+        email_mapping=['test@hzdr.de'],
+        id_mapping=['123456'],
+        full_name_mapping=['Test Tester'],
     )
 
 

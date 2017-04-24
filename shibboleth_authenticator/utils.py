@@ -32,9 +32,9 @@ def get_account_info(attributes, remote_app):
     """Return account info for remote user."""
     mappings = current_app.config['SHIBBOLETH_REMOTE_APPS'][
         remote_app]['mappings']
-    email = attributes[mappings['email']]
-    external_id = attributes[mappings['user_unique_id']]
-    full_name = attributes[mappings['full_name']]
+    email = attributes[mappings['email']][0]
+    external_id = attributes[mappings['user_unique_id']][0]
+    full_name = attributes[mappings['full_name']][0]
 
     return dict(
         user=dict(
