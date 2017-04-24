@@ -163,3 +163,29 @@ def user(userprofiles_app):
         db.session.add(profile)
     db.session.commit()
     return user1
+
+
+@pytest.fixture
+def valid_user_dict():
+    """Fixture for remote app."""
+    return dict(
+        user=dict(
+            email='test@hzdr.de',
+            profile=dict(
+                full_name='Test Tester',
+                username='123456',
+            ),
+        ),
+        external_id='123456',
+        external_method='hzdr',
+    )
+
+
+@pytest.fixture
+def valid_attributes():
+    """Fixture for valid attributes."""
+    return dict(
+        email_mapping=['test@hzdr.de'],
+        id_mapping=['123456'],
+        full_name_mapping=['Test Tester'],
+    )
