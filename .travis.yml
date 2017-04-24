@@ -66,6 +66,7 @@ script:
 
 after_success:
   - coveralls
+  - "touch docs/build/html/.nojekyll"
 
 deploy:
   provider: pages
