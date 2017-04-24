@@ -17,11 +17,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 addons:
-  postgresql: 9.4
+  postgresql: "9.4"
   apt:
     packages:
-    - libxml2-dev
-    - libxmlsec1-dev
+      - libxml2-dev
+      - libxmlsec1-dev
 
 notifications:
   email: false
@@ -67,6 +67,7 @@ script:
 after_success:
   - coveralls
 
+# don't use Github's Jekyll
 before_deploy:
   - "touch docs/build/html/.nojekyll"
 
@@ -74,6 +75,7 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
+  # only deploy one build out of the test matrix to gh-pages
   on:
     branch: dev
     python: "3.5"
