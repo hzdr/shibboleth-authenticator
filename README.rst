@@ -29,3 +29,7 @@ Shibboleth Authenticator
 ========================
 
 Module for Invenio that provides authentication via shibboleth.
+
+Developer documentation
+-----------------------
+See `https://tobiasfrust.github.io/shibboleth-authenticator <https://tobiasfrust.github.io/shibboleth-authenticator/index.html>`_.
