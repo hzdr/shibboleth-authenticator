@@ -79,6 +79,8 @@ deploy:
   on:
     branch: dev
     python: "3.5"
-    condition: "$EXTRAS = all,postgresql"
+    condition:
+      - "$EXTRAS = all,postgresql"
+      - "$REQUIREMENTS = release"
   local_dir: "docs/build/html"
   target_branch: gh-pages
