@@ -1,0 +1,86 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of the shibboleth-authenticator module for Invenio.
+# Copyright (C) 2017  Helmholtz-Zentrum Dresden-Rossendorf
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+addons:
+  postgresql: "9.4"
+  apt:
+    packages:
+      - libxml2-dev
+      - libxmlsec1-dev
+
+notifications:
+  email: false
+
+sudo: false
+
+services:
+  - mysql
+  - postgresql
+
+language: python
+
+python:
+  - "2.7"
+  - "3.5"
+
+cache:
+  - pip
+
+env:
+  - REQUIREMENTS=lowest EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
+  - REQUIREMENTS=lowest EXTRAS=all,mysql SQLALCHEMY_DATABASE_URI="mysql+pymysql://travis@localhost:3306/invenio"
+  - REQUIREMENTS=lowest EXTRAS=all,postgresql SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/invenio"
+  - REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
+  - REQUIREMENTS=release EXTRAS=all,mysql SQLALCHEMY_DATABASE_URI="mysql+pymysql://travis@localhost:3306/invenio"
+  - REQUIREMENTS=release EXTRAS=all,postgresql SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/invenio"
+
+before_install:
+  - "travis_retry pip install --upgrade pip setuptools py"
+  - "travis_retry pip install coveralls requirements-builder"
+  - "requirements-builder -e $EXTRAS --level=min setup.py > .travis-lowest-requirements.txt"
+  - "requirements-builder -e $EXTRAS --level=pypi setup.py > .travis-release-requirements.txt"
+  - "mysql -e 'CREATE DATABASE IF NOT EXISTS invenio;' -uroot"
+  - "psql -c 'CREATE DATABASE invenio;' -U postgres"
+
+install:
+  - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
+  - "travis_retry pip install -e .[${EXTRAS}]"
+
+script:
+  - "sh run-tests.sh"
+
+after_success:
+  - coveralls
+
+# don't use Github's Jekyll
+before_deploy:
+  - "touch docs/build/html/.nojekyll"
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  # only deploy one build out of the test matrix to gh-pages
+  on:
+    branch: dev
+    python: "3.5"
+    condition:
+      - "$EXTRAS = all,postgresql"
+      - "$REQUIREMENTS = release"
+  local_dir: "docs/build/html"
+  target_branch: gh-pages

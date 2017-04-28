@@ -1,0 +1,33 @@
+{
+    "security": {
+        "nameIdEncrypted": true,
+        "authnRequestsSigned": true,
+        "logoutRequestSigned": true,
+        "logoutResponseSigned": true,
+        "signMetadata": false,
+        "wantMessagesSigned": true,
+        "wantAssertionsSigned": true,
+        "wantNameId" : true,
+        "wantNameIdEncrypted": true,
+        "wantAssertionsEncrypted": true,
+        "signatureAlgorithm": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+        "metadataValidUntil": "2017-09-01T08:45:45Z"
+    },
+    "contactPerson": {
+        "technical": {
+            "givenName": "Test Tester",
+            "emailAddress": "t.test@test.de"
+        },
+        "support": {
+            "givenName": "Test Tester",
+            "emailAddress": "t.test@test.de"
+        }
+    },
+    "organization": {
+        "en-US": {
+            "name": "test",
+            "displayname": "Test",
+            "url": "https://localhost"
+        }
+    }
+}
