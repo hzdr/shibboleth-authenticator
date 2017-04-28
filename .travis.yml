@@ -77,7 +77,7 @@ deploy:
   github_token: $GITHUB_TOKEN
   # only deploy one build out of the test matrix to gh-pages
   on:
-    branch: dev
+    branch: master
     python: "3.5"
     condition:
       - "$EXTRAS = all,postgresql"
