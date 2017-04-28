@@ -22,11 +22,18 @@ from __future__ import absolute_import, print_function
 
 from flask import (Blueprint, abort, current_app, make_response, redirect,
                    request)
-from itsdangerous import TimedJSONWebSignatureSerializer
+from invenio_oauthclient.handlers import set_session_next_url
+from invenio_oauthclient.utils import get_safe_redirect_target
+from itsdangerous import BadData, TimedJSONWebSignatureSerializer
 from onelogin.saml2.auth import OneLogin_Saml2_Auth, OneLogin_Saml2_Error
 from werkzeug.local import LocalProxy
 
 from .handlers import authorized_signup_handler
+
+try:
+    from flask_login.utils import _create_identifier
+except ImportError:
+    from flask_login import _create_identifier
 
 try:
     from urllib.parse import urlparse
@@ -112,6 +119,17 @@ def login(remote_app):
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
     if 'saml_path' not in conf:
         return abort(500, 'Bad server configuration.')
+
+    # Store next parameter in state token
+    next_param = get_safe_redirect_target(arg='next')
+    if not next_param:
+        next_param = '/'
+    state_token = serializer.dumps({
+        'app': remote_app,
+        'next': next_param,
+        'sid': _create_identifier(),
+    })
+
     saml_path = conf['saml_path']
     req = prepare_flask_request(request)
     try:
@@ -119,7 +137,7 @@ def login(remote_app):
     except OneLogin_Saml2_Error:
         return abort(500)
 
-    return redirect(auth.login())
+    return redirect(auth.login(state_token))
 
 
 @blueprint.route('/authorized/<remote_app>', methods=['GET', 'POST'])
@@ -151,9 +169,26 @@ def authorized(remote_app=None):
     auth.process_response()
     errors = auth.get_errors()
     if len(errors) == 0 and auth.is_authenticated():
-        authorized_signup_handler(auth, remote_app)
-        return redirect('/')
-    return redirect('/')
+        if 'RelayState' in request.form:
+            # Get state token stored in RelayState
+            state_token = request.form['RelayState']
+            try:
+                assert state_token
+                # Check authenticity and integrity of state and decode the
+                # values.
+                state = serializer.loads(state_token)
+                # Verify that state is for this session, app and that next
+                # parameter have not been modified.
+                assert state['sid'] == _create_identifier()
+                assert state['app'] == remote_app
+                # Store next url
+                set_session_next_url(remote_app, state['next'])
+            except (AssertionError, BadData):
+                if current_app.config.get('OAUTHCLIENT_STATE_ENABLED', True) \
+                   or (not(current_app.debug or current_app.testing)):
+                    abort(403)
+        return authorized_signup_handler(auth, remote_app)
+    return abort(403)
 
 
 @blueprint.route('/metadata/<remote_app>')

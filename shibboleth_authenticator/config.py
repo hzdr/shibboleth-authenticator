@@ -330,3 +330,6 @@ into their `Documentation
 
 SHIBBOLETH_REMOTE_APPS = {}
 """Configuration of remote applications."""
+
+SHIBBOLETH_STATE_EXPIRES = 300
+"""Number of seconds after which the state token expires."""
