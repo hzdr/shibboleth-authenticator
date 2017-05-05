@@ -20,6 +20,7 @@ include *.md
 include *.rst
 include *.sh
 include *.txt
+include *.yml
 include LICENSE
 include pytest.ini
 prune docs/build
