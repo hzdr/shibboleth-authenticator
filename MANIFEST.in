@@ -23,6 +23,7 @@ include *.txt
 include LICENSE
 include pytest.ini
 prune docs/build
+prune .drone-*
 recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs Makefile
