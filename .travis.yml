@@ -84,3 +84,9 @@ deploy:
       - "$REQUIREMENTS = release"
   local_dir: "docs/build/html"
   target_branch: gh-pages
+
+# only build master and dev branch
+branches:
+  only:
+    - master
+    - dev
