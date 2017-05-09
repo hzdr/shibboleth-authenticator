@@ -1,0 +1,21 @@
+@startuml
+
+skinparam monochrome true
+
+actor Browser
+
+Browser -> WebApp: Request protected resource
+WebApp -> WebApp: Generate SAML request
+
+WebApp -> Browser: Redirect to IDP (HTTP/1.1 302)
+
+Browser -> IDP: Browser redirects user to IDP
+IDP -> IDP: Authenticate user and generate SAML response
+
+IDP -> Browser: Return encoded SAML response
+Browser -> WebApp: Send SAML response to WebApp
+
+WebApp -> WebApp: if necessary register and authenticate user
+WebApp -> Browser: Redirect user to requested resource
+
+@enduml

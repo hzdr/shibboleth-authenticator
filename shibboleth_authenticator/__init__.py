@@ -41,6 +41,10 @@ First of all, the client (SP) must be properly configured and registered in
 your IdP. Once, the SP is successfully registered the autorization flow is
 following:
 
+.. figure:: img/sequence_saml.svg
+
+   Sequence diagram of a successful authorization flow.
+
 1. The user clicks "Sign in with IdP-Name (idp1)":
 
     .. code-block:: http
