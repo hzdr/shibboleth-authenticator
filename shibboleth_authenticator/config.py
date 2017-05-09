@@ -74,8 +74,8 @@ Example:
             saml_path='',
             mappings=dict(
                 email='',
-                fullname='',
-                username='',
+                full_name='',
+                user_unique_id='',
             )
         )
     )
