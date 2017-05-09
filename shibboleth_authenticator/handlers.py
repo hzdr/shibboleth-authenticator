@@ -86,4 +86,4 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
     next_url = get_session_next_url(remote)
     if next_url:
         return redirect(next_url)
-    return redirect(url_for('zenodo_frontpage.index'))
+    return redirect(current_app.config['SECURITY_POST_LOGIN_VIEW'])
