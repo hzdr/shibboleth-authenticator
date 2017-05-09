@@ -116,9 +116,16 @@ def test_authorized(views_fixture):
         # Invalid configuration of python3-saml
         _invalid__saml_configuration(app)
         resp = client.get(
-            url_for('shibboleth_authenticator.metadata', remote_app='idp')
+            url_for('shibboleth_authenticator.authorized', remote_app='idp')
         )
         assert resp.status_code == 500
+
+        # Valid configuration, no authorization response
+        _valid_configuration(app)
+        resp = client.get(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp')
+        )
+        assert resp.status_code == 400
 
 
 def test_metadata(views_fixture):

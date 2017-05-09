@@ -166,7 +166,10 @@ def authorized(remote_app=None):
     except OneLogin_Saml2_Error:
         return abort(500)
     errors = []
-    auth.process_response()
+    try:
+        auth.process_response()
+    except:
+        return abort(400)
     errors = auth.get_errors()
     if len(errors) == 0 and auth.is_authenticated():
         if 'RelayState' in request.form:
