@@ -25,8 +25,10 @@ include LICENSE
 include pytest.ini
 prune docs/build
 prune .drone-*
+recursive-include docs *.puml
 recursive-include docs *.py
 recursive-include docs *.rst
+recursive-include docs *.svg
 recursive-include docs Makefile
 recursive-include shibboleth_authenticator *.html
 recursive-include shibboleth_authenticator *.mo
@@ -37,6 +39,7 @@ recursive-include shibboleth_authenticator *.mo
 recursive-include shibboleth_authenticator *.po
 recursive-include shibboleth_authenticator *.pot
 recursive-include shibboleth_authenticator *.py
+recursive-include tests *.base64
 recursive-include tests *.crt
 recursive-include tests *.json
 recursive-include tests *.key
