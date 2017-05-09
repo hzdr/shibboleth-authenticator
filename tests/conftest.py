@@ -26,6 +26,7 @@ import tempfile
 
 import pytest
 from flask import Flask
+from flask_mail import Mail
 from flask_menu import Menu as FlaskMenu
 from invenio_accounts import InvenioAccounts
 from invenio_db import InvenioDB, db
@@ -59,6 +60,7 @@ def base_app(request):
             )
         ),
         DEBUG=False,
+        EMAIL_BACKEND='flask_email.backends.locmem.Mail',
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI',
                                           'sqlite://'),
@@ -71,6 +73,7 @@ def base_app(request):
     FlaskMenu(base_app)
     InvenioDB(base_app)
     InvenioAccounts(base_app)
+    Mail(base_app)
 
     with base_app.app_context():
         if str(db.engine.url) != 'sqlite://' and \

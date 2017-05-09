@@ -21,6 +21,7 @@
 import os
 
 from flask import url_for
+from flask_login import current_user
 
 
 def _invalid_configuration(app):
@@ -55,6 +56,34 @@ def _valid_configuration(app):
             )
         )
     )
+
+
+def _authorized_valid_config(app):
+    app.config['SHIBBOLETH_REMOTE_APPS'].update(
+        dict(
+            idp=dict(
+                title='Test identity provider',
+                saml_path=os.path.join(os.path.dirname(__file__),
+                                       'data/settings/'),
+                mappings=dict(
+                    email='mail',
+                    full_name='sn',
+                    user_unique_id='uid',
+                )
+            )
+        )
+    )
+    app.config['OAUTHCLIENT_SESSION_KEY_PREFIX'] = 'prefix'
+
+
+def _load_file(filename):
+    """Load content of file."""
+    filename = os.path.join(os.path.dirname(__file__), 'data', filename)
+    if(os.path.exists(filename)):
+        f = open(filename, 'r')
+        content = f.read()
+        f.close()
+        return content
 
 
 def test_login(views_fixture):
@@ -126,6 +155,14 @@ def test_authorized(views_fixture):
             url_for('shibboleth_authenticator.authorized', remote_app='idp')
         )
         assert resp.status_code == 400
+
+        _authorized_valid_config(app)
+        resp = client.post(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp'),
+            data=dict(SAMLResponse=_load_file('valid.xml.base64'))
+        )
+        assert current_user.email == 'smartin@yaco.es'
+        assert current_user.is_authenticated
 
 
 def test_metadata(views_fixture):
