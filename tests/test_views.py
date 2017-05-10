@@ -40,7 +40,7 @@ def _invalid__saml_configuration(app):
             idp=dict(
                 title='Test identity provider',
                 saml_path=os.path.join(os.path.dirname(__file__),
-                                       'data/invalid/')
+                                       'data', 'invalid')
             )
         )
     )
@@ -52,7 +52,7 @@ def _valid_configuration(app):
             idp=dict(
                 title='Test identity provider',
                 saml_path=os.path.join(os.path.dirname(__file__),
-                                       'data/valid/')
+                                       'data', 'valid')
             )
         )
     )
@@ -64,7 +64,7 @@ def _authorized_valid_config(app):
             idp=dict(
                 title='Test identity provider',
                 saml_path=os.path.join(os.path.dirname(__file__),
-                                       'data/settings/'),
+                                       'data', 'settings'),
                 mappings=dict(
                     email='mail',
                     full_name='sn',
