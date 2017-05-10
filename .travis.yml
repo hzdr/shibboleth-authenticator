@@ -26,7 +26,9 @@ addons:
 notifications:
   email: false
 
-sudo: false
+dist: trusty
+
+sudo: required
 
 services:
   - mysql
@@ -56,6 +58,7 @@ before_install:
   - "requirements-builder -e $EXTRAS --level=min setup.py > .travis-lowest-requirements.txt"
   - "requirements-builder -e $EXTRAS --level=pypi setup.py > .travis-release-requirements.txt"
   - "mysql -e 'CREATE DATABASE IF NOT EXISTS invenio;' -uroot"
+  - "mysql -e 'Grant ALL ON invenio.* TO 'travis'@'localhost';'"
   - "psql -c 'CREATE DATABASE invenio;' -U postgres"
 
 install:
