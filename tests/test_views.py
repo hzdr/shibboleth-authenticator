@@ -23,6 +23,9 @@ import os
 from flask import url_for
 from flask_login import current_user
 
+from helpers import check_redirect_location
+from shibboleth_authenticator._compat import _create_identifier
+
 
 def _invalid_configuration(app):
     app.config['SHIBBOLETH_REMOTE_APPS'].update(
@@ -156,13 +159,62 @@ def test_authorized(views_fixture):
         )
         assert resp.status_code == 400
 
+
+def test_valid_authorized(views_fixture):
+    """Test authorized signup handler."""
+    app = views_fixture
+    with app.test_client() as client:
         _authorized_valid_config(app)
         resp = client.post(
             url_for('shibboleth_authenticator.authorized', remote_app='idp'),
             data=dict(SAMLResponse=_load_file('valid.xml.base64'))
         )
+        assert resp.status_code == 302
         assert current_user.email == 'smartin@yaco.es'
         assert current_user.is_authenticated
+
+        _authorized_valid_config(app)
+        resp = client.post(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp'),
+            data=dict(SAMLResponse=_load_file('expired.xml.base64'))
+        )
+        assert resp.status_code == 403
+        assert not current_user.is_authenticated
+
+        from shibboleth_authenticator.views import serializer
+
+        # test valid request with next parameter
+        next_url = '/test/redirect'
+        state = serializer.dumps({
+            'app': 'idp',
+            'sid': _create_identifier(),
+            'next': next_url,
+        })
+        resp = client.post(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp'),
+            data=dict(
+                SAMLResponse=_load_file('valid.xml.base64'),
+                RelayState=state,
+            )
+        )
+        check_redirect_location(resp, lambda x: x.endswith(next_url))
+        assert current_user.email == 'smartin@yaco.es'
+        assert current_user.is_authenticated
+
+        # test invalid state token
+        state = serializer.dumps({
+            'app': 'idp',
+            'sid': 'invalid',
+            'next': next_url,
+        })
+        resp = client.post(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp'),
+            data=dict(
+                SAMLResponse=_load_file('valid.xml.base64'),
+                RelayState=state,
+            )
+        )
+        assert resp.status_code == 400
 
 
 def test_metadata(views_fixture):

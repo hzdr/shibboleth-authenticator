@@ -30,14 +30,7 @@ recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs *.svg
 recursive-include docs Makefile
-recursive-include shibboleth_authenticator *.html
-recursive-include shibboleth_authenticator *.mo
-recursive-include shibboleth_authenticator *.po
-recursive-include shibboleth_authenticator *.pot
-recursive-include shibboleth_authenticator *.pyrecursive-include invenio_oauthclient *.html
-recursive-include shibboleth_authenticator *.mo
-recursive-include shibboleth_authenticator *.po
-recursive-include shibboleth_authenticator *.pot
+recursive-include docs *.txt
 recursive-include shibboleth_authenticator *.py
 recursive-include tests *.base64
 recursive-include tests *.crt

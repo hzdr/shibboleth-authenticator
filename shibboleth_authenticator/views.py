@@ -22,24 +22,15 @@ from __future__ import absolute_import, print_function
 
 from flask import (Blueprint, abort, current_app, make_response, redirect,
                    request)
+from flask_login import logout_user
 from invenio_oauthclient.handlers import set_session_next_url
 from invenio_oauthclient.utils import get_safe_redirect_target
 from itsdangerous import BadData, TimedJSONWebSignatureSerializer
 from onelogin.saml2.auth import OneLogin_Saml2_Auth, OneLogin_Saml2_Error
 from werkzeug.local import LocalProxy
 
+from ._compat import _create_identifier, urlparse
 from .handlers import authorized_signup_handler
-
-try:
-    from flask_login.utils import _create_identifier
-except ImportError:
-    from flask_login import _create_identifier
-
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
-
 
 blueprint = Blueprint(
     'shibboleth_authenticator',
@@ -155,6 +146,7 @@ def authorized(remote_app=None):
         flask.Response: Return redirect response or abort in case of failure.
 
     """
+    logout_user()
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
@@ -168,7 +160,7 @@ def authorized(remote_app=None):
     errors = []
     try:
         auth.process_response()
-    except:
+    except OneLogin_Saml2_Error:
         return abort(400)
     errors = auth.get_errors()
     if len(errors) == 0 and auth.is_authenticated():
@@ -189,7 +181,7 @@ def authorized(remote_app=None):
             except (AssertionError, BadData):
                 if current_app.config.get('OAUTHCLIENT_STATE_ENABLED', True) \
                    or (not(current_app.debug or current_app.testing)):
-                    abort(403)
+                    return abort(400)
         return authorized_signup_handler(auth, remote_app)
     return abort(403)
 

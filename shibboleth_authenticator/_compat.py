@@ -15,10 +15,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Compat."""
 
-pydocstyle shibboleth_authenticator tests && \
-isort -rc -c -df **/*.py && \
-check-manifest --ignore ".travis-*" && \
-sphinx-build -qnNW docs/source docs/build/html && \
-python setup.py test && \
-sphinx-build -qnNW -b doctest docs/source docs/build/doctest
+from __future__ import absolute_import, print_function
+
+try:
+    from flask_login.utils import _create_identifier
+except ImportError:
+    from flask_login import _create_identifier
+
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
