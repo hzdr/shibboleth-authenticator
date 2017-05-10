@@ -45,6 +45,8 @@ setup_requires = [
 
 install_requires = [
     'Flask>=0.11.1',
+    'Flask-Login>=0.3.2',
+    'Flask-WTF>=0.13.1,<0.14.2',
     'python3-saml>=1.2.3',
     'invenio-base>=1.0.0a9',
     'uritools>=1.0.1',
