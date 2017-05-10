@@ -20,7 +20,7 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import current_app, redirect, session, url_for
+from flask import current_app, redirect, session
 from flask_login import current_user
 from invenio_db import db
 from invenio_oauthclient.handlers import (get_session_next_url,
