@@ -22,6 +22,9 @@
 .. image:: https://img.shields.io/coveralls/tobiasfrust/shibboleth-authenticator/master.svg
         :target: https://coveralls.io/github/tobiasfrust/shibboleth-authenticator
 
+.. image:: https://img.shields.io/github/tag/tobiasfrust/shibboleth-authenticator.svg
+        :target: https://github.com/tobiasfrust/shibboleth-authenticator/releases
+
 .. image:: https://img.shields.io/github/license/tobiasfrust/shibboleth-authenticator.svg
         :target: https://github.com/tobiasfrust/shibboleth-authenticator/blob/master/LICENSE
 
