@@ -31,6 +31,7 @@ sudo: false
 services:
   - mysql
   - postgresql
+  - redis
 
 language: python
 

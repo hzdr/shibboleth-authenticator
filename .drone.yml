@@ -75,3 +75,5 @@ services:
       - MYSQL_USER=user
       - MYSQL_DATABASE=test
       - MYSQL_PASSWORD=pwd
+  cache:
+    image: redis
