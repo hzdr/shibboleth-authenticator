@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/bin/sh
 #
 # This file is part of the shibboleth-authenticator module for Invenio.
 # Copyright (C) 2017  Helmholtz-Zentrum Dresden-Rossendorf

@@ -168,17 +168,19 @@ def authorized(remote_app=None):
             # Get state token stored in RelayState
             state_token = request.form['RelayState']
             try:
-                assert state_token
+                if not state_token:
+                    raise ValueError
                 # Check authenticity and integrity of state and decode the
                 # values.
                 state = serializer.loads(state_token)
                 # Verify that state is for this session, app and that next
                 # parameter have not been modified.
-                assert state['sid'] == _create_identifier()
-                assert state['app'] == remote_app
+                if (state['sid'] != _create_identifier() or
+                        state['app'] != remote_app):
+                    raise ValueError
                 # Store next url
                 set_session_next_url(remote_app, state['next'])
-            except (AssertionError, BadData):
+            except (ValueError, BadData):
                 if current_app.config.get('OAUTHCLIENT_STATE_ENABLED', True) \
                    or (not(current_app.debug or current_app.testing)):
                     return abort(400)
