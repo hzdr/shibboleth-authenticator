@@ -216,6 +216,15 @@ def test_valid_authorized(views_fixture):
         )
         assert resp.status_code == 400
 
+        resp = client.post(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp'),
+            data=dict(
+                SAMLResponse=_load_file('valid.xml.base64'),
+                RelayState='',
+            )
+        )
+        assert resp.status_code == 400
+
 
 def test_metadata(views_fixture):
     """Test metadata view."""
