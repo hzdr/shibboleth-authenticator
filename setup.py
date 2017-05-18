@@ -28,14 +28,14 @@ history = open('CHANGES.md').read()
 tests_require = [
     'check-manifest>=0.35',
     'coverage>=4.0',
-    'invenio-accounts>=1.0.0b1',
+    'invenio-accounts>=1.0.0b3',
     'invenio-userprofiles>=1.0.0a9',
     'isort>=4.2.5',
     'pydocstyle>=1.1.1',
     'pytest-cache>=1.0',
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
+    'pytest>=2.8.3',
     'sphinx_rtd_theme>=0.2.4',
 ]
 
@@ -58,13 +58,13 @@ extras_require = {
         'Sphinx>=1.5.1',
     ],
     'mysql': [
-        'invenio-oauthclient[mysql]>=1.0.0a12',
+        'invenio-oauthclient[mysql]>=1.0.0a13',
     ],
     'postgresql': [
-        'invenio-oauthclient[postgresql]>=1.0.0a12',
+        'invenio-oauthclient[postgresql]>=1.0.0a13',
     ],
     'sqlite': [
-        'invenio-oauthclient[sqlite]>=1.0.0a12',
+        'invenio-oauthclient[sqlite]>=1.0.0a13',
     ],
     'tests': tests_require,
 }
@@ -118,9 +118,11 @@ setup(
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
     ]
 )

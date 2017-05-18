@@ -43,7 +43,13 @@ _datastore = LocalProxy(lambda: _security.datastore)
 #
 @oauth_error_handler
 def authorized_signup_handler(auth, remote=None, *args, **kwargs):
-    """Handle sign-in/up functionality.
+    """
+    Handle sign-in/up functionality.
+
+    Checks if user is already registered. If not registered, the function
+    registers a new user and authenticates the new user. If there already
+    exists a user object in the database, the user is only authenticated and
+    logged in.
 
     :param remote: The remote application.
     :param resp: The response.
