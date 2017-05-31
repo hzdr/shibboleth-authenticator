@@ -22,7 +22,7 @@ from __future__ import absolute_import, print_function
 
 from flask import (Blueprint, abort, current_app, make_response, redirect,
                    request)
-from flask_login import logout_user
+from flask_login import current_user, logout_user
 from invenio_oauthclient.handlers import set_session_next_url
 from invenio_oauthclient.utils import get_safe_redirect_target
 from itsdangerous import BadData, TimedJSONWebSignatureSerializer
@@ -146,7 +146,8 @@ def authorized(remote_app=None):
         flask.Response: Return redirect response or abort in case of failure.
 
     """
-    logout_user()
+    if current_user.is_authenticated:
+        logout_user()
     if remote_app not in current_app.config['SHIBBOLETH_REMOTE_APPS']:
         return abort(404)
     conf = current_app.config['SHIBBOLETH_REMOTE_APPS'][remote_app]
