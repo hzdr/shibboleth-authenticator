@@ -20,8 +20,10 @@
 
 import os
 
+import mock
 from flask import url_for
 from flask_login import current_user
+from onelogin.saml2.auth import OneLogin_Saml2_Error
 
 from helpers import check_redirect_location
 from shibboleth_authenticator._compat import _create_identifier
@@ -79,6 +81,11 @@ def _authorized_valid_config(app):
     app.config['OAUTHCLIENT_SESSION_KEY_PREFIX'] = 'prefix'
 
 
+def patch_auth(request, path):
+    """Patch init saml function."""
+    raise OneLogin_Saml2_Error('Failed')
+
+
 def _load_file(filename):
     """Load content of file."""
     filename = os.path.join(os.path.dirname(__file__), 'data', filename)
@@ -110,6 +117,21 @@ def test_login(views_fixture):
         _invalid__saml_configuration(app)
         resp = client.get(
             url_for('shibboleth_authenticator.metadata', remote_app='idp')
+        )
+        assert resp.status_code == 500
+
+
+@mock.patch(
+    'shibboleth_authenticator.views.init_saml_auth',
+    side_effect=patch_auth
+)
+def test_login_fail(mock_auth, views_fixture):
+    """Test failing login view."""
+    app = views_fixture
+    with app.test_client() as client:
+        _valid_configuration(app)
+        resp = client.get(
+            url_for('shibboleth_authenticator.login', remote_app='idp')
         )
         assert resp.status_code == 500
 
@@ -158,6 +180,37 @@ def test_authorized(views_fixture):
             url_for('shibboleth_authenticator.authorized', remote_app='idp')
         )
         assert resp.status_code == 400
+
+
+@mock.patch('shibboleth_authenticator.handlers.oauth_register')
+@mock.patch('shibboleth_authenticator.handlers.oauth_authenticate')
+def test_failing_authorized1(mock_authenticate, mock_register, views_fixture):
+    """Test authorized signup handler."""
+    app = views_fixture
+    with app.test_client() as client:
+        _authorized_valid_config(app)
+        mock_register.return_value = None
+        resp = client.post(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp'),
+            data=dict(SAMLResponse=_load_file('valid.xml.base64'))
+        )
+        assert resp.status_code == 302
+        assert not current_user.is_authenticated
+
+
+@mock.patch('shibboleth_authenticator.handlers.oauth_authenticate')
+def test_failing_authorized2(mock_authenticate, views_fixture):
+    """Test authorized signup handler."""
+    app = views_fixture
+    with app.test_client() as client:
+        _authorized_valid_config(app)
+        mock_authenticate.return_value = False
+        resp = client.post(
+            url_for('shibboleth_authenticator.authorized', remote_app='idp'),
+            data=dict(SAMLResponse=_load_file('valid.xml.base64'))
+        )
+        assert resp.status_code == 302
+        assert not current_user.is_authenticated
 
 
 def test_valid_authorized(views_fixture):
@@ -224,6 +277,20 @@ def test_valid_authorized(views_fixture):
             )
         )
         assert resp.status_code == 400
+
+
+@mock.patch('shibboleth_authenticator.views.len')
+def test_metadata_fail(mock_len, views_fixture):
+    """Test failing metadata view."""
+    app = views_fixture
+    mock_len.return_value = 1
+    with app.test_client() as client:
+        # Valid configuration
+        _valid_configuration(app)
+        resp = client.get(
+            url_for('shibboleth_authenticator.metadata', remote_app='idp')
+        )
+        assert resp.status_code == 500
 
 
 def test_metadata(views_fixture):
