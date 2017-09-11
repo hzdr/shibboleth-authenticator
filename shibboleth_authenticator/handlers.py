@@ -26,9 +26,9 @@ from invenio_db import db
 from invenio_oauthclient.handlers import (get_session_next_url,
                                           oauth_error_handler,
                                           token_session_key)
-from invenio_oauthclient.utils import (disable_csrf, fill_form,
-                                       oauth_authenticate, oauth_get_user,
-                                       oauth_register, registrationform_cls)
+from invenio_oauthclient.utils import (create_csrf_disabled_registrationform,
+                                       fill_form, oauth_authenticate,
+                                       oauth_get_user, oauth_register)
 from werkzeug.local import LocalProxy
 
 from .utils import get_account_info
@@ -69,9 +69,9 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
         )
         if user is None:
             # Auto sign-up if user not found
-            form_cls = registrationform_cls()
+            form = create_csrf_disabled_registrationform()
             form = fill_form(
-                disable_csrf(form_cls()),
+                form,
                 account_info['user']
             )
 

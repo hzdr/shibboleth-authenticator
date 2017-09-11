@@ -11,7 +11,7 @@
         "wantNameIdEncrypted": true,
         "wantAssertionsEncrypted": true,
         "signatureAlgorithm": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
-        "metadataValidUntil": "2017-09-01T08:45:45Z"
+        "metadataValidUntil": "2025-09-01T08:45:45Z"
     },
     "contactPerson": {
         "technical": {
