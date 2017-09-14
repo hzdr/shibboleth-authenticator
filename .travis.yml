@@ -28,7 +28,7 @@ notifications:
 
 dist: trusty
 
-sudo: true
+sudo: false
 
 services:
   - mysql
