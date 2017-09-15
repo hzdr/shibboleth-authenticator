@@ -34,14 +34,14 @@ your distribution. For Ubuntu use:
 Shibboleth-Authenticator
 --------------------------------
 
-Shibboleth-Authenticator module can be installed via PyPI from GitHub:
+Shibboleth-Authenticator module can be installed via PyPI:
+
+.. code-block:: console
+
+  $ pip install shibboleth-authenticator
+
+Or the latest development branch directly from GitHub:
 
 .. code-block:: console
 
   $ pip install git+git://github.com/tobiasfrust/shibboleth-authenticator@master
-
-Or the latest development branch:
-
-.. code-block:: console
-
-  $ pip install git+git://github.com/tobiasfrust/shibboleth-authenticator@dev
