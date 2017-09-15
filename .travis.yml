@@ -54,8 +54,10 @@ env:
 
 stages:
   - test
-  - deploy-pypi
-  - deploy-docs
+  - name: deploy-pypi
+    if: tag =~ ^v
+  - name: deploy-docs
+    if: branch = master
 
 before_install:
   - "travis_retry pip install --upgrade pip setuptools py"
