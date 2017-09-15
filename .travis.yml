@@ -71,23 +71,34 @@ script:
 after_success:
   - coveralls
 
-# don't use Github's Jekyll
-before_deploy:
-  - "touch docs/build/html/.nojekyll"
-
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  # only deploy one build out of the test matrix to gh-pages
-  on:
-    branch: master
-    python: "3.5"
-    condition:
-      - "$EXTRAS = all,postgresql"
-      - "$REQUIREMENTS = release"
-  local_dir: "docs/build/html"
-  target_branch: gh-pages
+jobs:
+  include:
+    - stage: PyPI Deployment
+      env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
+      script: "Deploying to PyPI..."
+      deploy:
+        provider: pypi
+        user: "frust"
+          password:
+            secure: "OxdYuguDK4ZoVtuts1vTaFsWTwlMDMpdvmonOhxmI4OJDWyLv5KRWjO6nS8SRrGCZeaPBx1LWXO48BeRt0yeaRUnaRLVjkY8ex2sd326m3qL+O934yclLo4GkqYO2X0HBxa2O5JpCrvNgeqCIJ0cD1WVdsqg/qoevbXC7S56AkAK+5SZZcYn75aC3diSKvl5u/B3qpp2ytvvcPfVXjfcGLp1evGCzr549P8K+BEAesgL1o+9F/1pIHNUu6kKDpwFbat9P//vcBUqZvGuWi6L1/IkZtseAmr4uZcVAA5lgzJ4xmPHy0bIE05o2wk7d7dngUi9YDwa7StiqouB3u+puJnvQQuDPjwNIUEYlaMnOyZ8y2JppXioUihsksteGw96IRKuLjA1NtpuNx7mw7kyGde9sBHtHrud1tiBFkxS7dIT2BTs8Il20XIYUPrN2JeHUDtGegSNxQmOCO+x1KLrl9yGrVPsDU7cBpIhKJWnTEB3+YkoSq7dWAD80yunVmuBLJbFIXKAJmvlxzKNvzym/SjPSXObmVptK1kNCwQEg9pAq+xDF/oIAtJq+kW4rcSKf5TXLi71qTowTWvLNuUX+1vNPdwQgzQ5ffRLfMX6Rs/p1GvFz02ijbfiBH6P6pYiZJH4YMtufkirsSDosecCmRRj686w78Idgc9coUok49w="
+        on:
+          tags: true
+          if: tag =~ ^v
+    - stage: Documentation deployment
+      env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
+      script: "Deploying documentation..."
+      before_deploy:
+        - "touch docs/build/html/.nojekyll"
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        # only deploy one build out of the test matrix to gh-pages
+        on:
+          branch: master
+          python: "3.5"
+        local_dir: "docs/build/html"
+          target_branch: gh-pages
 
 # only build master and dev branch
 branches:
