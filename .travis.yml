@@ -57,7 +57,7 @@ stages:
   - name: deploy-pypi
     if: tag =~ ^v
   - name: deploy-docs
-    if: branch = master
+    if: tag =~ ^v
 
 before_install:
   - "travis_retry pip install --upgrade pip setuptools py"
@@ -108,7 +108,8 @@ jobs:
           github_token: $GITHUB_TOKEN
           # only deploy one build out of the test matrix to gh-pages
           on:
-            branch: master
+            tags: true
+            if: tag =~ ^v
           local_dir: "docs/build/html"
           target_branch: gh-pages
 
