@@ -100,12 +100,12 @@ jobs:
       python: "3.5"
       env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
       script: sphinx-build -qnNW docs/source docs/build/html
+      before_deploy:
+        - "touch docs/build/html/.nojekyll"
       deploy:
           provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
-          before_deploy:
-            - "touch docs/build/html/.nojekyll"
           # only deploy one build out of the test matrix to gh-pages
           on:
             branch: master
