@@ -49,6 +49,7 @@ install_requires = [
     'Flask-Login>=0.3.2',
     'Flask-WTF>=0.13.1',
     'python3-saml>=1.2.6',
+    'simplekv>=0.10.0,<0.11.0'
     'uritools>=1.0.1',
 ]
 
