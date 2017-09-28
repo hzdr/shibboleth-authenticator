@@ -31,7 +31,7 @@ from invenio_oauthclient.utils import (create_csrf_disabled_registrationform,
                                        oauth_get_user, oauth_register)
 from werkzeug.local import LocalProxy
 
-from .utils import disable_csrf, get_account_info
+from .utils import create_csrf_free_registrationform, get_account_info
 
 _security = LocalProxy(lambda: current_app.extensions['security'])
 
@@ -69,9 +69,7 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
         )
         if user is None:
             # Auto sign-up if user not found
-            form = create_csrf_disabled_registrationform()
-
-            disabled_csrf_form = disable_csrf(form)
+            disabled_csrf_form = create_csrf_free_registrationform()
 
             disabled_csrf_form = fill_form(
                 disabled_csrf_form,
