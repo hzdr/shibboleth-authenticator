@@ -210,8 +210,8 @@ epub_exclude_files = ['search.html']
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'https://docs.python.org/': None,
-    'invenio-oauthclient': ('https://pythonhosted.org/invenio-oauthclient/',
+    'invenio-oauthclient': ('https://invenio-oauthclient.readthedocs.io/en/latest/',
                             None),
-    'invenio-accounts': ('https://pythonhosted.org/invenio-accounts', None),
+    'invenio-accounts': ('https://invenio-accounts.readthedocs.io/en/latest/', None),
     'flask': ('https://flask.readthedocs.io/en/latest/', None),
 }
