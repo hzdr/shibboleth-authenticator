@@ -30,7 +30,8 @@ from flask_mail import Mail
 from flask_menu import Menu as FlaskMenu
 from invenio_accounts import InvenioAccounts
 from invenio_db import InvenioDB, db
-from invenio_userprofiles import UserProfile
+from invenio_userprofiles import InvenioUserProfiles, UserProfile
+from invenio_userprofiles.views import blueprint_ui_init
 from sqlalchemy_utils.functions import (create_database, database_exists,
                                         drop_database)
 
@@ -105,6 +106,17 @@ def app(base_app):
 
 
 @pytest.fixture
+def userprofiles_app(app):
+    """Configure userprofiles module."""
+    app.config.update(
+        USERPROFILES_EXTEND_SECURITY_FORMS=True,
+    )
+    InvenioUserProfiles(app)
+    app.register_blueprint(blueprint_ui_init)
+    return app
+
+
+@pytest.fixture
 def models_fixture(app):
     """Flask app with example data used to test models."""
     with app.app_context():
@@ -153,6 +165,17 @@ def views_fixture(base_app):
     ShibbolethAuthenticator(base_app)
     base_app.register_blueprint(blueprint)
     return base_app
+
+
+@pytest.fixture
+def userprofiles_fixture(views_fixture):
+    """Fixture with userprofiles module."""
+    views_fixture.config.update(
+        USERPROFILES_EXTEND_SECURITY_FORMS=True,
+    )
+    InvenioUserProfiles(views_fixture)
+    views_fixture.register_blueprint(blueprint_ui_init)
+    return views_fixture
 
 
 @pytest.fixture
