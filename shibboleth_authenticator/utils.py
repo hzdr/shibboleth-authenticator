@@ -47,3 +47,12 @@ def get_account_info(attributes, remote_app):
         external_id=external_id,
         external_method=remote_app,
     )
+
+
+def disable_csrf(form):
+    """Disable CSRF protection."""
+    form.csrf_enabled = False
+    for f in form:
+        if isinstance(f, FormField):
+            disable_csrf(f.form)
+    return form

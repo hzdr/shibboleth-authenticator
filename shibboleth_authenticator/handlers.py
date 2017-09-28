@@ -22,6 +22,8 @@ from __future__ import absolute_import, print_function
 
 from flask import current_app, redirect, session
 from flask_login import current_user
+from werkzeug.local import LocalProxy
+
 from invenio_db import db
 from invenio_oauthclient.handlers import (get_session_next_url,
                                           oauth_error_handler,
@@ -29,9 +31,8 @@ from invenio_oauthclient.handlers import (get_session_next_url,
 from invenio_oauthclient.utils import (create_csrf_disabled_registrationform,
                                        fill_form, oauth_authenticate,
                                        oauth_get_user, oauth_register)
-from werkzeug.local import LocalProxy
 
-from .utils import get_account_info
+from .utils import disable_csrf, get_account_info
 
 _security = LocalProxy(lambda: current_app.extensions['security'])
 
@@ -70,12 +71,15 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
         if user is None:
             # Auto sign-up if user not found
             form = create_csrf_disabled_registrationform()
-            form = fill_form(
-                form,
+
+            disabled_csrf_form = disable_csrf(form)
+
+            disabled_csrf_form = fill_form(
+                disabled_csrf_form,
                 account_info['user']
             )
 
-            user = oauth_register(form)
+            user = oauth_register(disabled_csrf_form)
 
             # if registration fails ...
             if user is None:
