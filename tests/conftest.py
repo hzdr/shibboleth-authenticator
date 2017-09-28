@@ -110,6 +110,7 @@ def userprofiles_app(app):
     """Configure userprofiles module."""
     app.config.update(
         USERPROFILES_EXTEND_SECURITY_FORMS=True,
+        WTF_CSRF_ENABLED=True,
     )
     InvenioUserProfiles(app)
     app.register_blueprint(blueprint_ui_init)
@@ -199,10 +200,10 @@ def valid_user_dict():
             email='test@hzdr.de',
             profile=dict(
                 full_name='Test Tester',
-                username='123456',
+                username='test123',
             ),
         ),
-        external_id='123456',
+        external_id='test123',
         external_method='hzdr',
     )
 
@@ -212,6 +213,6 @@ def valid_attributes():
     """Fixture for valid attributes."""
     return dict(
         email_mapping=['test@hzdr.de'],
-        id_mapping=['123456'],
+        id_mapping=['test123'],
         full_name_mapping=['Test Tester'],
     )

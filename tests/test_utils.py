@@ -20,8 +20,11 @@
 from __future__ import absolute_import, print_function
 
 import pytest
+from invenio_oauthclient.utils import fill_form
+from wtforms.fields.core import FormField
 
-from shibboleth_authenticator.utils import get_account_info
+from shibboleth_authenticator.utils import (create_csrf_free_registrationform,
+                                            get_account_info)
 
 
 def _attributes():
@@ -41,3 +44,31 @@ def test_accountinfo(valid_user_dict, valid_attributes, models_fixture):
     # Test invalid remote app.
     with pytest.raises(KeyError):
         res = get_account_info(valid_attributes, 'invalid')
+
+
+def test_csrf_disable(userprofiles_app, valid_user_dict):
+    """Test disabling of CSRF-Token."""
+    app = userprofiles_app
+    with app.test_request_context():
+        form = create_csrf_free_registrationform()
+
+        form = fill_form(
+            form,
+            valid_user_dict['user'],
+        )
+
+        import flask_wtf
+        from pkg_resources import parse_version
+        if parse_version(flask_wtf.__version__) >= parse_version("0.14.0"):
+            assert form.meta.csrf is False
+            assert 'csrf_token' not in form
+            for f in form:
+                if isinstance(f, FormField):
+                    assert f.meta.csrf is False
+                    assert 'csrf_token' not in f
+        else:
+            assert form.csrf_enabled is False
+            for f in form:
+                if isinstance(f, FormField):
+                    assert f.csrf_enabled is False
+        assert form.validate() is True
