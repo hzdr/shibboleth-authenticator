@@ -21,8 +21,8 @@ from __future__ import absolute_import, print_function
 
 import pytest
 from invenio_oauthclient.utils import fill_form
-from wtforms.fields.core import FormField
 
+from helpers import check_csrf_disabled
 from shibboleth_authenticator.utils import (create_csrf_free_registrationform,
                                             get_account_info)
 
@@ -57,18 +57,5 @@ def test_csrf_disable(userprofiles_app, valid_user_dict):
             valid_user_dict['user'],
         )
 
-        import flask_wtf
-        from pkg_resources import parse_version
-        if parse_version(flask_wtf.__version__) >= parse_version("0.14.0"):
-            assert form.meta.csrf is False
-            assert 'csrf_token' not in form
-            for f in form:
-                if isinstance(f, FormField):
-                    assert f.meta.csrf is False
-                    assert 'csrf_token' not in f
-        else:
-            assert form.csrf_enabled is False
-            for f in form:
-                if isinstance(f, FormField):
-                    assert f.csrf_enabled is False
-        assert form.validate() is True
+        check_csrf_disabled(form)
+        assert form.validate()

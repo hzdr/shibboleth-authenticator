@@ -64,7 +64,7 @@ def disable_csrf(form):
     from pkg_resources import parse_version
     if parse_version(flask_wtf.__version__) >= parse_version("0.14.0"):
         form.meta.csrf = False
-        if 'csrf_token' in form:
+        if hasattr(form, 'csrf_token'):
             del form.csrf_token
         for f in form:
             if isinstance(f, FormField):

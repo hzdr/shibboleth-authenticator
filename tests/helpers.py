@@ -21,6 +21,7 @@
 from inspect import isfunction
 
 import six
+from wtforms.fields.core import FormField
 
 
 def check_redirect_location(resp, loc):
@@ -30,3 +31,21 @@ def check_redirect_location(resp, loc):
         assert resp.headers['Location'] == loc
     elif isfunction(loc):
         assert loc(resp.headers['Location'])
+
+
+def check_csrf_disabled(form):
+    """Check if csrf is disabled in form."""
+    import flask_wtf
+    from pkg_resources import parse_version
+    if parse_version(flask_wtf.__version__) >= parse_version("0.14.0"):
+        assert form.meta.csrf is False
+        if hasattr(form, 'csrf_token'):
+            assert not form.csrf_token
+        for f in form:
+            if isinstance(f, FormField):
+                check_csrf_disabled(f)
+    else:
+        assert form.csrf_enabled is False
+        for f in form:
+            if isinstance(f, FormField):
+                check_csrf_disabled(f)
