@@ -21,7 +21,6 @@
 from __future__ import absolute_import, print_function
 
 from flask import current_app
-from invenio_oauthclient.utils import create_csrf_disabled_registrationform
 from werkzeug.local import LocalProxy
 from wtforms.fields.core import FormField
 
@@ -51,10 +50,18 @@ def get_account_info(attributes, remote_app):
     )
 
 
+def registrationfrom_cls():
+    """Create a registration form."""
+    class RegistrationForm(_security.confirm_register_form):
+        password = None
+        recaptcha = None
+    return RegistrationForm
+
+
 def create_csrf_free_registrationform():
     """Create CSRF disables registration form."""
-    form = create_csrf_disabled_registrationform()
-    form = disable_csrf(form)
+    form_cls = registrationfrom_cls()
+    form = disable_csrf(form_cls())
     return form
 
 

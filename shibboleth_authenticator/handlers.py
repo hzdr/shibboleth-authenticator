@@ -26,8 +26,7 @@ from invenio_db import db
 from invenio_oauthclient.handlers import (get_session_next_url,
                                           oauth_error_handler,
                                           token_session_key)
-from invenio_oauthclient.utils import (create_csrf_disabled_registrationform,
-                                       fill_form, oauth_authenticate,
+from invenio_oauthclient.utils import (fill_form, oauth_authenticate,
                                        oauth_get_user, oauth_register)
 from werkzeug.local import LocalProxy
 
