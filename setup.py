@@ -29,7 +29,7 @@ tests_require = [
     'check-manifest>=0.35',
     'coverage>=4.0',
     'invenio-accounts>=1.0.0b8',
-    'invenio-userprofiles>=1.0.0b1',
+    'invenio-userprofiles>=1.0.0b2',
     'isort>=4.2.5',
     'mock>=1.3.0',
     'pydocstyle>=1.1.1',
@@ -58,13 +58,13 @@ extras_require = {
         'Sphinx>=1.5.1',
     ],
     'mysql': [
-        'invenio-oauthclient[mysql]>=1.0.0b2',
+        'invenio-oauthclient[mysql]>=1.0.0b3',
     ],
     'postgresql': [
-        'invenio-oauthclient[postgresql]>=1.0.0b2',
+        'invenio-oauthclient[postgresql]>=1.0.0b3',
     ],
     'sqlite': [
-        'invenio-oauthclient[sqlite]>=1.0.0b2',
+        'invenio-oauthclient[sqlite]>=1.0.0b3',
     ],
     'tests': tests_require,
 }

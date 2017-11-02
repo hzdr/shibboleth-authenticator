@@ -23,16 +23,7 @@ import pytest
 from invenio_oauthclient.utils import fill_form
 
 from helpers import check_csrf_disabled
-from shibboleth_authenticator.utils import (create_csrf_free_registrationform,
-                                            get_account_info)
-
-
-def _attributes():
-    return dict(
-        email_mapping=['test@hzdr.de'],
-        id_mapping=['123456'],
-        full_name_mapping=['Test Tester'],
-    )
+from shibboleth_authenticator.utils import get_account_info
 
 
 def test_accountinfo(valid_user_dict, valid_attributes, models_fixture):
@@ -44,18 +35,3 @@ def test_accountinfo(valid_user_dict, valid_attributes, models_fixture):
     # Test invalid remote app.
     with pytest.raises(KeyError):
         res = get_account_info(valid_attributes, 'invalid')
-
-
-def test_csrf_disable(userprofiles_app, valid_user_dict):
-    """Test disabling of CSRF-Token."""
-    app = userprofiles_app
-    with app.test_request_context():
-        form = create_csrf_free_registrationform()
-
-        form = fill_form(
-            form,
-            valid_user_dict['user'],
-        )
-
-        check_csrf_disabled(form)
-        assert form.validate()

@@ -48,37 +48,3 @@ def get_account_info(attributes, remote_app):
         external_id=external_id,
         external_method=remote_app,
     )
-
-
-def registrationfrom_cls():
-    """Create a registration form."""
-    class RegistrationForm(_security.confirm_register_form):
-        password = None
-        recaptcha = None
-    return RegistrationForm
-
-
-def create_csrf_free_registrationform():
-    """Create CSRF disables registration form."""
-    form_cls = registrationfrom_cls()
-    form = disable_csrf(form_cls())
-    return form
-
-
-def disable_csrf(form):
-    """Disable CSRF protection."""
-    import flask_wtf
-    from pkg_resources import parse_version
-    if parse_version(flask_wtf.__version__) >= parse_version("0.14.0"):
-        form.meta.csrf = False
-        if hasattr(form, 'csrf_token'):
-            del form.csrf_token
-        for f in form:
-            if isinstance(f, FormField):
-                disable_csrf(f.form)
-    else:
-        form.csrf_enabled = False
-        for f in form:
-            if isinstance(f, FormField):
-                disable_csrf(f.form)
-    return form
