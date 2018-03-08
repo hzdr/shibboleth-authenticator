@@ -213,5 +213,5 @@ intersphinx_mapping = {
     'invenio-oauthclient': ('https://invenio-oauthclient.readthedocs.io/en/latest/',
                             None),
     'invenio-accounts': ('https://invenio-accounts.readthedocs.io/en/latest/', None),
-    'flask': ('https://flask.readthedocs.io/en/latest/', None),
+    'flask': ('http://flask.pocoo.org/docs/latest/', None),
 }

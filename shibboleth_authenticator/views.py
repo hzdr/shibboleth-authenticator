@@ -70,7 +70,7 @@ def prepare_flask_request(request):
     Prepare flask request.
 
     Args:
-        request(flask.request): The Flask request.
+        request(flask.Request): The Flask request.
     Returns:
         dict: Returns dictionary used in :func:`init_saml_auth`.
 
