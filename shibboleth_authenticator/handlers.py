@@ -23,12 +23,14 @@ from __future__ import absolute_import, print_function
 from flask import current_app, redirect, session
 from flask_login import current_user
 from invenio_db import db
+from invenio_oauthclient.errors import AlreadyLinkedError
 from invenio_oauthclient.handlers import (get_session_next_url,
                                           oauth_error_handler,
                                           token_session_key)
 from invenio_oauthclient.utils import (create_csrf_disabled_registrationform,
                                        fill_form, oauth_authenticate,
-                                       oauth_get_user, oauth_register)
+                                       oauth_get_user, oauth_link_external_id,
+                                       oauth_register)
 from werkzeug.local import LocalProxy
 
 from .utils import get_account_info
@@ -88,6 +90,17 @@ def authorized_signup_handler(auth, remote=None, *args, **kwargs):
             return current_app.login_manager.unauthorized()
 
     db.session.commit()
+
+    # create external id link
+    try:
+        oauth_link_external_id(
+            user, dict(
+                id=account_info['external_id'],
+                method=remote)
+        )
+        db.session.commit()
+    except AlreadyLinkedError:
+        pass
 
     # Redirect to next
     next_url = get_session_next_url(remote)
