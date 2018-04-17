@@ -1,0 +1,21 @@
+
+{
+    "creators": [
+        {
+            "name": "Frust, Tobias",
+            "affiliation": "Helmholtz-Zentrum Dresden-Rossendorf",
+            "orcid": "0000-0002-5590-7473"
+        }
+    ],
+    "title": "Shibboleth-Authenticator for Invenio",
+    "access_right": "open",
+    "upload_type": "software",
+    "license": "GPL-3.0",
+    "pub_id": "27360",
+    "description": "The shibboleth-authenticator module for Invenio provides web browser single sign-on via the SAML protocol. It is based on the python3-saml module and supports the usage of multiple identity providers at the same time.",
+    "communities": [
+        {
+            "identifier": "fwc"
+        }
+    ]
+}
