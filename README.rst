@@ -28,6 +28,9 @@
 .. image:: https://img.shields.io/github/license/tobiasfrust/shibboleth-authenticator.svg
         :target: https://github.com/tobiasfrust/shibboleth-authenticator/blob/master/LICENSE
 
+.. image:: https://rodare.hzdr.de/badge/DOI/10.14278/rodare.13.svg
+   :target: https://doi.org/10.14278/rodare.13
+
 Shibboleth Authenticator
 ========================
 
