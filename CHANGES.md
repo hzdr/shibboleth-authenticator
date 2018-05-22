@@ -1,3 +1,5 @@
+Version 0.1.2.post
+
 Version 0.1.2
 
 - Add `.rodare.json` file for automatic software preservation [#46](https://github.com/tobiasfrust/shibboleth-authenticator/pull/46)
