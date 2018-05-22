@@ -1,5 +1,7 @@
 Version 0.1.2.post
 
+- Bump Invenio dependencies to stable versions (> v1.0.0) [#47](https://github.com/tobiasfrust/shibboleth-authenticator/pull/47)
+
 Version 0.1.2
 
 - Add `.rodare.json` file for automatic software preservation [#46](https://github.com/tobiasfrust/shibboleth-authenticator/pull/46)
