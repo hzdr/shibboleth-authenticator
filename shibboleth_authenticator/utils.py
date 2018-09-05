@@ -20,7 +20,8 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import current_app
+import uritools
+from flask import current_app, request
 from werkzeug.local import LocalProxy
 from wtforms.fields.core import FormField
 
@@ -48,3 +49,23 @@ def get_account_info(attributes, remote_app):
         external_id=external_id,
         external_method=remote_app,
     )
+
+
+def get_safe_redirect_target(arg='next'):
+    """Get URL to redirect to and ensure that it is local.
+
+    :param arg: URL argument.
+    :returns: The redirect target or ``None``.
+    """
+    for target in request.args.get(arg), request.referrer:
+        if target:
+            redirect_uri = uritools.urisplit(target)
+            allowed_hosts = current_app.config.get('APP_ALLOWED_HOSTS', [])
+            if redirect_uri.host in allowed_hosts:
+                return target
+            elif redirect_uri.path:
+                return uritools.uricompose(
+                    path=redirect_uri.path,
+                    query=redirect_uri.query
+                )
+    return None

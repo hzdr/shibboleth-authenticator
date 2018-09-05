@@ -24,13 +24,13 @@ from flask import (Blueprint, abort, current_app, make_response, redirect,
                    request)
 from flask_login import current_user, logout_user
 from invenio_oauthclient.handlers import set_session_next_url
-from invenio_oauthclient.utils import get_safe_redirect_target
 from itsdangerous import BadData, TimedJSONWebSignatureSerializer
 from onelogin.saml2.auth import OneLogin_Saml2_Auth, OneLogin_Saml2_Error
 from werkzeug.local import LocalProxy
 
 from ._compat import _create_identifier, urlparse
 from .handlers import authorized_signup_handler
+from .utils import get_safe_redirect_target
 
 blueprint = Blueprint(
     'shibboleth_authenticator',

@@ -19,11 +19,13 @@
 
 from __future__ import absolute_import, print_function
 
+import mock
 import pytest
 from invenio_oauthclient.utils import fill_form
 
 from helpers import check_csrf_disabled
-from shibboleth_authenticator.utils import get_account_info
+from shibboleth_authenticator.utils import (get_account_info,
+                                            get_safe_redirect_target)
 
 
 def test_accountinfo(valid_user_dict, valid_attributes, models_fixture):
@@ -35,3 +37,28 @@ def test_accountinfo(valid_user_dict, valid_attributes, models_fixture):
     # Test invalid remote app.
     with pytest.raises(KeyError):
         res = get_account_info(valid_attributes, 'invalid')
+
+
+@mock.patch('shibboleth_authenticator.utils.request')
+def test_get_safe_rediect_target(mock_request, app):
+    """Test the function to get a safe redirect target."""
+    app.config.update(
+        APP_ALLOWED_HOSTS=['hzdr.de']
+    )
+    url1 = "/deposit/new?c=rodare"
+    url2 = "https://hzdr.de/path/subpath?parameter=test"
+    url3 = "http://fzr.de/path/subpath?parameter=test"
+
+    mock_request.args.get.return_value = url1
+    mock_request.referrer = None
+
+    assert get_safe_redirect_target() == url1
+
+    mock_request.args.get.return_value = url2
+    assert get_safe_redirect_target() == url2
+
+    mock_request.args.get.return_value = url3
+    assert get_safe_redirect_target() == '/path/subpath?parameter=test'
+
+    mock_request.args.get.return_value = None
+    assert not get_safe_redirect_target()

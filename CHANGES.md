@@ -1,5 +1,6 @@
 Version 0.1.2.post
 
+- Fix get_safe_redirect_target function by not dropping the query parameters anymore [#48](https://github.com/tobiasfrust/shibboleth-authenticator/pull/48)
 - Bump Invenio dependencies to stable versions (> v1.0.0) [#47](https://github.com/tobiasfrust/shibboleth-authenticator/pull/47)
 
 Version 0.1.2
