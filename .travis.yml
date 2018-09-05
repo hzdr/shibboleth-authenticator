@@ -92,7 +92,7 @@ jobs:
         - provider: pypi
           user: "frust"
           password:
-            secure: "OxdYuguDK4ZoVtuts1vTaFsWTwlMDMpdvmonOhxmI4OJDWyLv5KRWjO6nS8SRrGCZeaPBx1LWXO48BeRt0yeaRUnaRLVjkY8ex2sd326m3qL+O934yclLo4GkqYO2X0HBxa2O5JpCrvNgeqCIJ0cD1WVdsqg/qoevbXC7S56AkAK+5SZZcYn75aC3diSKvl5u/B3qpp2ytvvcPfVXjfcGLp1evGCzr549P8K+BEAesgL1o+9F/1pIHNUu6kKDpwFbat9P//vcBUqZvGuWi6L1/IkZtseAmr4uZcVAA5lgzJ4xmPHy0bIE05o2wk7d7dngUi9YDwa7StiqouB3u+puJnvQQuDPjwNIUEYlaMnOyZ8y2JppXioUihsksteGw96IRKuLjA1NtpuNx7mw7kyGde9sBHtHrud1tiBFkxS7dIT2BTs8Il20XIYUPrN2JeHUDtGegSNxQmOCO+x1KLrl9yGrVPsDU7cBpIhKJWnTEB3+YkoSq7dWAD80yunVmuBLJbFIXKAJmvlxzKNvzym/SjPSXObmVptK1kNCwQEg9pAq+xDF/oIAtJq+kW4rcSKf5TXLi71qTowTWvLNuUX+1vNPdwQgzQ5ffRLfMX6Rs/p1GvFz02ijbfiBH6P6pYiZJH4YMtufkirsSDosecCmRRj686w78Idgc9coUok49w="
+            secure: "OvkENQvoKrUabFDwnP4GvporaU3IFivbtqAwXXXBpwhf/3UtIEMxbMyXrVF9ifYJ+ghrT7X+FPMZXbNhEB/+JgKV1E4DLUUUHBu+s5k82AGhdm9wImv9b+Oeb6c1A/4Vqf/ODJlwGTEdfzrYTSGSdQzi27bKZMD85iKATN+8HH+ZW6un/NwZV1VZrVI4xWx7LvSNG8keyK2x6lOhN380XxnD96GkYFlaLNc3tf+YEMlu6E7YibrgXwn5yemtHiEIXoJE0Q6A/d0vjjWeC7TE+ir2ymxwBjPUmuVq6PnjMPqD5a4bKGIxt+pFfDC+e+8WlRBEe3I4aNKvvBjVfoqqefdMurJmou5DKCaqAESO4QAUgJwYUTM0mMtBEAX5QL52KDzfgJipUmX3wpWKpaY2eY3xx1f160Lck+KUub48elxRHtR9qOWVQJQJ9PNIiBihLMc/t+7Vdst6I+0iF2t4Pb30hXpVvYUeMwiuijFSNzXYKj22PvsekSF7KlvDEc9gt2QJJmKz6g+2UF6LbtuiC3LAxSrjjwOxpl7+tgnuxwty8cbHbU6rlYo8a2wrfPGEZcdPhKm2SJ+JlGCqWtEZz0Q56ruKjoHSxSvy7DNIbic6IvShaGwkEbjvD+yW8u/38aSsXAAgRJHBUPU35hvlXB6Lxw2ARyDxfd/nxb4bCjg="
           distributions: "sdist bdist_wheel"
           on:
             tags: true
