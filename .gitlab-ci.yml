@@ -1,0 +1,161 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of the shibboleth-authenticator module for Invenio.
+# Copyright (C) 2018 HZDR
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+services:
+  - redis:alpine
+  - postgres:alpine
+  - mysql:5
+
+variables:
+  POSTGRES_USER: postgres
+  POSTGRES_DB: test
+  ACCOUNTS_SESSION_REDIS_URL: "redis://redis:6379/0"
+  PIP_CACHE_DIR: pip-cache
+  MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  MYSQL_USER: test
+  MYSQL_PASSWORD: test
+  MYSQL_DATABASE: test
+
+cache:
+  paths:
+    - pip-cache
+
+before_script:
+  - apt-get update
+  - apt-get install -qy libxml2-dev libxmlsec1-dev libxmlsec1-openssl
+  - pip install --upgrade pip setuptools py
+  - pip install coveralls requirements-builder
+  - requirements-builder -e $EXTRAS --level=$REQUIREMENTS setup.py > .ci-$REQUIREMENTS-requirements.txt
+  - pip install -r .ci-$REQUIREMENTS-requirements.txt
+  - pip install -e .[$EXTRAS]
+
+py3.5-min-sqlite:
+  stage: test
+  image: python:3.5
+  variables:
+    SQLALCHEMY_DATABASE_URI: "sqlite:///test.db"
+    EXTRAS: all,sqlite
+    REQUIREMENTS: min
+  script:
+    - ./run-tests.sh
+
+py3.5-pypi-sqlite:
+  stage: test
+  image: python:3.5
+  variables:
+    SQLALCHEMY_DATABASE_URI: "sqlite:///test.db"
+    EXTRAS: all,sqlite
+    REQUIREMENTS: pypi
+  script:
+    - ./run-tests.sh
+
+py3.5-min-postgresql:
+  stage: test
+  image: python:3.5
+  variables:
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://postgres@postgres:5432/test"
+    EXTRAS: all,postgresql
+    REQUIREMENTS: min
+  script:
+    - ./run-tests.sh
+
+py3.5-pypi-postgresql:
+  stage: test
+  image: python:3.5
+  variables:
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://postgres@postgres:5432/test"
+    EXTRAS: all,postgresql
+    REQUIREMENTS: pypi
+  script:
+    - ./run-tests.sh
+
+py3.5-min-mysql:
+  stage: test
+  image: python:3.5
+  variables:
+    SQLALCHEMY_DATABASE_URI: "mysql+pymysql://test:test@mysql:3306/test"
+    EXTRAS: all,mysql
+    REQUIREMENTS: min
+  script:
+    - ./run-tests.sh
+
+py3.5-pypi-mysql:
+  stage: test
+  image: python:3.5
+  variables:
+    SQLALCHEMY_DATABASE_URI: "mysql+pymysql://test:test@mysql:3306/test"
+    EXTRAS: all,mysql
+    REQUIREMENTS: pypi
+  script:
+    - ./run-tests.sh
+
+ubuntu-bionic:
+  stage: test
+  image: ubuntu:bionic
+  variables:
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://postgres@postgres:5432/test"
+    EXTRAS: all,postgresql
+    REQUIREMENTS: pypi
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+  cache:
+    key: "bionic-pip"
+    paths:
+      - pip-cache
+  before_script:
+    - apt-get update
+    # Install Python
+    - apt-get install -qy python3 python3-dev build-essential curl git-core
+    - ln -s /usr/bin/python3 /usr/bin/python
+    - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py && rm get-pip.py
+    - apt-get install -qy libxml2-dev libxmlsec1-dev libxmlsec1-openssl
+    - pip install --upgrade pip setuptools py
+    - pip install coveralls requirements-builder
+    - requirements-builder -e $EXTRAS --level=$REQUIREMENTS setup.py > .ci-$REQUIREMENTS-requirements.txt
+    - pip install -r .ci-$REQUIREMENTS-requirements.txt
+    - pip install -e .[$EXTRAS]
+  script:
+    - ./run-tests.sh
+
+ubuntu-xenial:
+  stage: test
+  image: ubuntu:xenial
+  variables:
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://postgres@postgres:5432/test"
+    EXTRAS: all,postgresql
+    REQUIREMENTS: pypi
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8  
+  cache:
+    key: "xenial-pip"
+    paths:
+      - pip-cache
+  before_script:
+    - apt-get update
+    # Install Python
+    - apt-get install -qy python3 python3-dev build-essential curl git-core
+    - ln -s /usr/bin/python3 /usr/bin/python
+    - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py && rm get-pip.py
+    - apt-get install -qy libxml2-dev libxmlsec1-dev libxmlsec1-openssl
+    - pip install --upgrade pip setuptools py
+    - pip install coveralls requirements-builder
+    - requirements-builder -e $EXTRAS --level=$REQUIREMENTS setup.py > .ci-$REQUIREMENTS-requirements.txt
+    - pip install -r .ci-$REQUIREMENTS-requirements.txt
+    - pip install -e .[$EXTRAS]
+  script:
+    - ./run-tests.sh

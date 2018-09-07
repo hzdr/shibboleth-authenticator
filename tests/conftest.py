@@ -45,6 +45,8 @@ def base_app(request):
     instance_path = tempfile.mkdtemp()
     base_app = Flask('testapp')
     base_app.config.update(
+        ACCOUNTS_SESSION_REDIS_URL=os.getenv('ACCOUNTS_SESSION_REDIS_URL',
+                                             'redis://localhost:6379/0'),
         TESTING=True,
         WTF_CSRF_ENABLED=False,
         LOGIN_DISABLED=False,
