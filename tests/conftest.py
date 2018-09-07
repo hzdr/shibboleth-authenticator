@@ -67,7 +67,7 @@ def base_app(request):
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI',
                                           'sqlite://'),
-        SERVER_NAME='localhost',
+        SERVER_NAME='localhost.localdomain',
         SECRET_KEY='TEST',
         SECURITY_DEPRECATED_PASSWORD_SCHEMES=[],
         SECURITY_PASSWORD_HASH='plaintext',
