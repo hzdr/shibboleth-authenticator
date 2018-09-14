@@ -1,3 +1,7 @@
+Version 0.1.4.post
+
+- Add Python 3.6 to Travis CI test matrix [49](https://github.com/tobiasfrust/shibboleth-authenticator/pull/49)
+
 Version 0.1.4
 
 - No new changes are introduced in this version. PyPi deployment failed for version 0.1.3.

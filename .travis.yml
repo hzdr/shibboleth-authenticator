@@ -40,6 +40,7 @@ language: python
 python:
   - "2.7"
   - "3.5"
+  - "3.6"
 
 cache:
   - pip
@@ -83,7 +84,7 @@ jobs:
       after_success:
         - coveralls
     - stage: deploy-pypi
-      python: "3.5"
+      python: "3.6"
       env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
       before_install: echo "Skipping before_install step..."
       install: echo "Skipping install step..."
@@ -98,7 +99,7 @@ jobs:
             tags: true
             if: tag =~ ^v
     - stage: deploy-docs
-      python: "3.5"
+      python: "3.6"
       env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
       script: sphinx-build -qnNW docs/source docs/build/html
       before_deploy:
