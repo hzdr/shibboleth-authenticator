@@ -75,7 +75,6 @@ install:
 
 script:
   - "sh run-tests.sh"
-
 jobs:
   include:
     - stage: test
@@ -83,6 +82,11 @@ jobs:
         - "sh run-tests.sh"
       after_success:
         - coveralls
+    - python: 3.6
+      env: REQUIREMENTS=release EXTRAS=all,sqlite
+      script:
+        - pip install -U git+https://github.com/leokoppel/sphinxcontrib-versioning.git#egg=sphinxcontrib-versioning
+        - sphinx-versioning build -T -W "^v[0-9\.]*$" -w master docs/source docs/build/html
     - stage: deploy-pypi
       python: "3.6"
       env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
@@ -101,7 +105,9 @@ jobs:
     - stage: deploy-docs
       python: "3.6"
       env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
-      script: sphinx-build -qnNW docs/source docs/build/html
+      script:
+        - pip install -U git+https://github.com/leokoppel/sphinxcontrib-versioning.git#egg=sphinxcontrib-versioning
+        - sphinx-versioning build -T -W "^v[0-9\.]*$" -w master docs/source docs/build/html
       before_deploy:
         - "touch docs/build/html/.nojekyll"
       deploy:
