@@ -116,7 +116,7 @@ jobs:
           github_token: $GITHUB_TOKEN
           # only deploy one build out of the test matrix to gh-pages
           on:
+            branch: master
             tags: true
-            if: tag =~ ^v
           local_dir: "docs/build/html"
           target_branch: gh-pages
