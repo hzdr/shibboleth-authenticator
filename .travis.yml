@@ -111,12 +111,20 @@ jobs:
       before_deploy:
         - "touch docs/build/html/.nojekyll"
       deploy:
-          provider: pages
+        - provider: pages
           skip_cleanup: true
           github_token: $GITHUB_TOKEN
-          # only deploy one build out of the test matrix to gh-pages
+          # deploy master branch to gh-pages
           on:
             branch: master
+          local_dir: "docs/build/html"
+          target_branch: gh-pages
+        - provider: pages
+          skip_cleanup: true
+          github_token: $GITHUB_TOKEN
+          # deploy on new version tags to gh-pages
+          on:
             tags: true
+            if: tag =~ ^v
           local_dir: "docs/build/html"
           target_branch: gh-pages
