@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 addons:
-  postgresql: "9.4"
+  postgresql: "9.6"
   apt:
     packages:
       - libxml2-dev
@@ -26,7 +26,7 @@ addons:
 notifications:
   email: false
 
-dist: trusty
+dist: xenial
 
 sudo: false
 
