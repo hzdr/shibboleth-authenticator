@@ -48,7 +48,9 @@ install_requires = [
     'Flask>=0.11.1',
     'Flask-Login>=0.3.2',
     'Flask-WTF>=0.13.1',
+    'oauthlib>=1.1.2,!=2.0.3,!=2.0.4,!=2.0.5,<3.0.0',
     'python3-saml>=1.4.0',
+    'requests-oauthlib>=0.6.2,<1.2.0',
     'uritools>=1.0.1',
 ]
 
