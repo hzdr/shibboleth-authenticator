@@ -16,17 +16,17 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ..
 
-.. image:: https://img.shields.io/travis/tobiasfrust/shibboleth-authenticator/master.svg
-        :target: https://travis-ci.org/tobiasfrust/shibboleth-authenticator
+.. image:: https://img.shields.io/travis/hzdr/shibboleth-authenticator/master.svg
+        :target: https://travis-ci.org/hzdr/shibboleth-authenticator
 
-.. image:: https://img.shields.io/coveralls/tobiasfrust/shibboleth-authenticator/master.svg
-        :target: https://coveralls.io/github/tobiasfrust/shibboleth-authenticator
+.. image:: https://img.shields.io/coveralls/hzdr/shibboleth-authenticator/master.svg
+        :target: https://coveralls.io/github/hzdr/shibboleth-authenticator
 
-.. image:: https://img.shields.io/github/tag/tobiasfrust/shibboleth-authenticator.svg
-        :target: https://github.com/tobiasfrust/shibboleth-authenticator/releases
+.. image:: https://img.shields.io/github/tag/hzdr/shibboleth-authenticator.svg
+        :target: https://github.com/hzdr/shibboleth-authenticator/releases
 
-.. image:: https://img.shields.io/github/license/tobiasfrust/shibboleth-authenticator.svg
-        :target: https://github.com/tobiasfrust/shibboleth-authenticator/blob/master/LICENSE
+.. image:: https://img.shields.io/github/license/hzdr/shibboleth-authenticator.svg
+        :target: https://github.com/hzdr/shibboleth-authenticator/blob/master/LICENSE
 
 .. image:: https://rodare.hzdr.de/badge/DOI/10.14278/rodare.13.svg
    :target: https://doi.org/10.14278/rodare.13
@@ -64,9 +64,9 @@ Or the latest development branch directly from GitHub:
 
 .. code-block:: console
 
-  $ pip install git+git://github.com/tobiasfrust/shibboleth-authenticator@master
+  $ pip install git+git://github.com/hzdr/shibboleth-authenticator@master
 
 Developer documentation
 =======================
-See `https://tobiasfrust.github.io/shibboleth-authenticator <https://tobiasfrust.github.io/shibboleth-authenticator/index.html>`_.
+See `https://hzdr.github.io/shibboleth-authenticator <https://hzdr.github.io/shibboleth-authenticator/index.html>`_.
 

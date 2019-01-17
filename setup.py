@@ -93,7 +93,7 @@ setup(
     license='GPLv3',
     author='HZDR',
     author_email='t.frust@hzdr.de',
-    url='https://github.com/tobiasfrust/shibboleth-authenticator',
+    url='https://github.com/hzdr/shibboleth-authenticator',
     packages=packages,
     zip_safe=False,
     include_package_data=True,

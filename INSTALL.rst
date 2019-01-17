@@ -44,4 +44,4 @@ Or the latest development branch directly from GitHub:
 
 .. code-block:: console
 
-  $ pip install git+https://github.com/tobiasfrust/shibboleth-authenticator@master
+  $ pip install git+https://github.com/hzdr/shibboleth-authenticator.git@master#egg=shibboleth-authenticator
