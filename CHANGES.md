@@ -1,4 +1,4 @@
-## Unreleased changes
+## Version 0.1.5
 
 - Global: Update links after project transfer [[#55](https://github.com/hzdr/shibboleth-authenticator/pull/55)]
 - Dependencies: Pin requests-oauthlib and oauthlib [[#54](https://github.com/hzdr/shibboleth-authenticator/pull/54)]
