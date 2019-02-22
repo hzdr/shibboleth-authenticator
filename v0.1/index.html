@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Shibboleth Authenticator &mdash; shibboleth-authenticator 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> shibboleth-authenticator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to use</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">shibboleth-authenticator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Shibboleth Authenticator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <a class="reference external image-reference" href="https://travis-ci.org/tobiasfrust/shibboleth-authenticator"><img alt="https://img.shields.io/travis/tobiasfrust/shibboleth-authenticator/master.svg" src="https://img.shields.io/travis/tobiasfrust/shibboleth-authenticator/master.svg" /></a>
+<a class="reference external image-reference" href="https://coveralls.io/github/tobiasfrust/shibboleth-authenticator"><img alt="https://img.shields.io/coveralls/tobiasfrust/shibboleth-authenticator/master.svg" src="https://img.shields.io/coveralls/tobiasfrust/shibboleth-authenticator/master.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/tobiasfrust/shibboleth-authenticator/releases"><img alt="https://img.shields.io/github/tag/tobiasfrust/shibboleth-authenticator.svg" src="https://img.shields.io/github/tag/tobiasfrust/shibboleth-authenticator.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/tobiasfrust/shibboleth-authenticator/blob/master/LICENSE"><img alt="https://img.shields.io/github/license/tobiasfrust/shibboleth-authenticator.svg" src="https://img.shields.io/github/license/tobiasfrust/shibboleth-authenticator.svg" /></a>
+<div class="section" id="shibboleth-authenticator">
+<h1>Shibboleth Authenticator<a class="headerlink" href="#shibboleth-authenticator" title="Permalink to this headline">¶</a></h1>
+<p>Module for Invenio that provides authentication via shibboleth.</p>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>The python3-saml module uses <code class="docutils literal notranslate"><span class="pre">xmlsec</span></code>, which offers Python bindings for the
+XML Security Library. <code class="docutils literal notranslate"><span class="pre">xmlsec</span></code> depends on <code class="docutils literal notranslate"><span class="pre">libxml2-dev</span></code> and
+<code class="docutils literal notranslate"><span class="pre">libxmlsec1-dev</span></code>. These libraries can be installed via the package manager of
+your distribution. For Ubuntu use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo apt install libxml2-dev libxmlsec1-dev
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Shibboleth-Authenticator<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Shibboleth-Authenticator module can be installed via PyPI:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install shibboleth-authenticator
+</pre></div>
+</div>
+<p>Or the latest development branch directly from GitHub:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install git+git://github.com/tobiasfrust/shibboleth-authenticator@master
+</pre></div>
+</div>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="user-s-guide">
+<h2>User’s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
+<p>This part of the documentation will show you how to get started in using
+Shibboleth-Authenticator module for Invenio.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#shibboleth-authenticator">Shibboleth-Authenticator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to use</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#authorization-flow-overview">Authorization Flow Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#module-shibboleth_authenticator.config">Configuration</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<p>If you look for information on a specific function, class or method,
+this part of the documentation is for you.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-shibboleth_authenticator.handlers">Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-shibboleth_authenticator.views">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-shibboleth_authenticator.utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, HZDR
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v0.1
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="index.html">v0.1</a></dd>
+            <dd><a href="../v0.1.1/index.html">v0.1.1</a></dd>
+            <dd><a href="../v0.1.2/index.html">v0.1.2</a></dd>
+            <dd><a href="../v0.1.3/index.html">v0.1.3</a></dd>
+            <dd><a href="../v0.1.4/index.html">v0.1.4</a></dd>
+            <dd><a href="../v0.1.5/index.html">v0.1.5</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../master/index.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

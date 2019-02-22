@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>shibboleth_authenticator.utils &mdash; shibboleth-authenticator 0.1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> shibboleth-authenticator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">How to use</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">shibboleth-authenticator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>shibboleth_authenticator.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for shibboleth_authenticator.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of the shibboleth-authenticator module for Invenio.</span>
+<span class="c1"># Copyright (C) 2017  Helmholtz-Zentrum Dresden-Rossendorf</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;Utility methods to help find, authenticate or register a remote user.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">uritools</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">current_app</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">werkzeug.local</span> <span class="k">import</span> <span class="n">LocalProxy</span>
+<span class="kn">from</span> <span class="nn">wtforms.fields.core</span> <span class="k">import</span> <span class="n">FormField</span>
+
+<span class="n">_security</span> <span class="o">=</span> <span class="n">LocalProxy</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">current_app</span><span class="o">.</span><span class="n">extensions</span><span class="p">[</span><span class="s1">&#39;security&#39;</span><span class="p">])</span>
+
+<span class="n">_datastore</span> <span class="o">=</span> <span class="n">LocalProxy</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_security</span><span class="o">.</span><span class="n">datastore</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_account_info"><a class="viewcode-back" href="../../api.html#shibboleth_authenticator.utils.get_account_info">[docs]</a><span class="k">def</span> <span class="nf">get_account_info</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">remote_app</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return account info for remote user.&quot;&quot;&quot;</span>
+    <span class="n">mappings</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_REMOTE_APPS&#39;</span><span class="p">][</span>
+        <span class="n">remote_app</span><span class="p">][</span><span class="s1">&#39;mappings&#39;</span><span class="p">]</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="n">mappings</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">external_id</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="n">mappings</span><span class="p">[</span><span class="s1">&#39;user_unique_id&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">full_name</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="n">mappings</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">user</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span>
+            <span class="n">profile</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">full_name</span><span class="o">=</span><span class="n">full_name</span><span class="p">,</span>
+                <span class="n">username</span><span class="o">=</span><span class="n">external_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">external_id</span><span class="o">=</span><span class="n">external_id</span><span class="p">,</span>
+        <span class="n">external_method</span><span class="o">=</span><span class="n">remote_app</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_safe_redirect_target"><a class="viewcode-back" href="../../api.html#shibboleth_authenticator.utils.get_safe_redirect_target">[docs]</a><span class="k">def</span> <span class="nf">get_safe_redirect_target</span><span class="p">(</span><span class="n">arg</span><span class="o">=</span><span class="s1">&#39;next&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get URL to redirect to and ensure that it is local.</span>
+
+<span class="sd">    :param arg: URL argument.</span>
+<span class="sd">    :returns: The redirect target or ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span> <span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">redirect_uri</span> <span class="o">=</span> <span class="n">uritools</span><span class="o">.</span><span class="n">urisplit</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="n">allowed_hosts</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;APP_ALLOWED_HOSTS&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="n">redirect_uri</span><span class="o">.</span><span class="n">host</span> <span class="ow">in</span> <span class="n">allowed_hosts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">target</span>
+            <span class="k">elif</span> <span class="n">redirect_uri</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">uritools</span><span class="o">.</span><span class="n">uricompose</span><span class="p">(</span>
+                    <span class="n">path</span><span class="o">=</span><span class="n">redirect_uri</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                    <span class="n">query</span><span class="o">=</span><span class="n">redirect_uri</span><span class="o">.</span><span class="n">query</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, HZDR
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v0.1.2
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v0.1/index.html">v0.1</a></dd>
+            <dd><a href="../../../v0.1.1/index.html">v0.1.1</a></dd>
+            <dd><a href="utils.html">v0.1.2</a></dd>
+            <dd><a href="../../../v0.1.3/index.html">v0.1.3</a></dd>
+            <dd><a href="../../../v0.1.4/index.html">v0.1.4</a></dd>
+            <dd><a href="../../../v0.1.5/index.html">v0.1.5</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../../../master/index.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,609 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to use &mdash; shibboleth-authenticator 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> shibboleth-authenticator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to use</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authorization-flow-overview">Authorization Flow Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-shibboleth_authenticator.config">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#remote-application">Remote application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure-python3-saml">Configure python3-saml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">shibboleth-authenticator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>How to use</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-shibboleth_authenticator">
+<span id="how-to-use"></span><h1>How to use<a class="headerlink" href="#module-shibboleth_authenticator" title="Permalink to this headline">¶</a></h1>
+<p>Module for Invenio that provides authentication via shibboleth.</p>
+<p>The shibboleth-authenticator module for Invenio provides web authorization via
+the Shibboleth single sign-on system and allows people to sign in using just
+one identity to various systems run by federations of different organizations.</p>
+<p>This module is basing on <a class="reference external" href="https://github.com/inveniosoftware/invenio-oauthclient">invenio-oauthclient</a> and <a class="reference external" href="https://github.com/onelogin/python3-saml">python3-saml</a>. It supports multiple
+Identity-Providers (IDPs) which can easily be configured via configuration
+parameters.</p>
+<div class="section" id="authorization-flow-overview">
+<h2>Authorization Flow Overview<a class="headerlink" href="#authorization-flow-overview" title="Permalink to this headline">¶</a></h2>
+<p>There generally exist two different roles. The Identity-Provider (IdP) and the
+Service-Provider (SP). The IdPs supply user information, while SPs consume this
+information and give access to secure content. The ShibbolethAuthenticator
+module acts as a SP.</p>
+<p>First of all, the client (SP) must be properly configured and registered in
+your IdP. Once, the SP is successfully registered the autorization flow is
+following:</p>
+<div class="figure" id="id1">
+<img alt="_images/sequence_saml.svg" src="_images/sequence_saml.svg" /><p class="caption"><span class="caption-text">Sequence diagram of a successful authorization flow.</span></p>
+</div>
+<ol class="arabic">
+<li><p class="first">The user clicks “Sign in with IdP-Name (idp1)”:</p>
+<blockquote>
+<div><div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/shibboleth/login/idp1</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p>The <em>client</em> redirects the user to the IdP’s <em>authorize URL</em>.</p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">FOUND</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://app.onelogin.com/trust/saml2/http-post/</span>
+    <span class="l">sso/&lt;onelogin_connector_id&gt;?...</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">The IdP asks the user to sign in (if not already signed in).</p>
+</li>
+<li><p class="first">The IdP aks the user to authorize or reject the SP’s request for access.</p>
+</li>
+<li><p class="first">If the user authorizes the request, the IdP redirects the user back to
+the client web application using the configured URL.</p>
+<blockquote>
+<div><div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">FOUND</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://localhost/shibboleth/authorized/idp1?...</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">If the user was authorized successfully the user can now access restricted
+ressources.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Edit your configuration. Add <code class="docutils literal notranslate"><span class="pre">shibboleth_authenticator</span></code> to your packages.</li>
+<li>Define your remote applications according to the configuration guide below.</li>
+</ol>
+</div>
+<div class="section" id="module-shibboleth_authenticator.config">
+<span id="configuration"></span><h2>Configuration<a class="headerlink" href="#module-shibboleth_authenticator.config" title="Permalink to this headline">¶</a></h2>
+<p>Configuration variables for service provider.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><cite>SHIBBOLETH_REMOTE_APPS</cite></td>
+<td>Dictionary of remote applications.
+See example below. <strong>Default:</strong> <code class="docutils literal notranslate"><span class="pre">{}</span></code></td>
+</tr>
+<tr class="row-even"><td><cite>SHIBBOLETH_STATE_EXPIRES</cite></td>
+<td>Number of seconds after which the state token
+expires. <strong>Default:</strong> <code class="docutils literal notranslate"><span class="pre">OAUTHCLIENT_STATE_EXPIRES</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Each remote application must be defined in the <code class="docutils literal notranslate"><span class="pre">SHIBBOLETH_REMOTE_APPS</span></code>
+dictionary, where the keys are the application names and the values the
+configuration parameters for the application.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SHIBBOLETH_REMOTE_APPS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">idp1</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="c1"># Configuration values for idp1</span>
+    <span class="p">),</span>
+    <span class="n">idp2</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="c1"># Configuration values for idp2</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The given application name (e.g. <cite>idp1</cite> or <cite>idp2</cite>) is used in the login
+authorized and metadata endpoints:</p>
+<ul class="simple">
+<li>Login endpoint: <code class="docutils literal notranslate"><span class="pre">/shibboleth/login/&lt;remote_app&gt;</span></code></li>
+<li>Authorized endpoint: <code class="docutils literal notranslate"><span class="pre">/shibboleth/authorized/&lt;remote_app&gt;</span></code></li>
+<li>Metadata endpoint: <code class="docutils literal notranslate"><span class="pre">/shibboleth/metadata/&lt;remote_app&gt;</span></code></li>
+</ul>
+<div class="section" id="remote-application">
+<h3>Remote application<a class="headerlink" href="#remote-application" title="Permalink to this headline">¶</a></h3>
+<p>Configuration of a single remote application is a dictionary with the
+following keys:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">title</span></code> - Title of the remote application. Not in use so far.</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> - Short description of the remote application. Not in use so
+far.</li>
+<li><code class="docutils literal notranslate"><span class="pre">saml_path</span></code> - This is the path, that will target the specific ‘saml’ folder
+of the remote application. Python3-saml requires it to load the settings
+files.</li>
+<li><code class="docutils literal notranslate"><span class="pre">mappings</span></code> - This is a dictionary, that contains key-value pairs to map
+the response of the IDP to the keys required by shibboleth-authenticator.
+The required keys are: <code class="docutils literal notranslate"><span class="pre">email</span></code>, <code class="docutils literal notranslate"><span class="pre">fullname</span></code>, <code class="docutils literal notranslate"><span class="pre">username</span></code></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SHIBBOLETH_REMOTE_APPS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">idp1</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">title</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">saml_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">mappings</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">email</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">user_unique_id</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-python3-saml">
+<h3>Configure python3-saml<a class="headerlink" href="#configure-python3-saml" title="Permalink to this headline">¶</a></h3>
+<p>For using python3-saml you need to configure the Service Provider’s (SP) and
+the Identity Provider’s (IDP) info. Futhermore, you can configure advanced
+security issues like signatures and encryption.</p>
+<p>To provide the settings information create a <code class="docutils literal notranslate"><span class="pre">settings.json</span></code> and an
+<code class="docutils literal notranslate"><span class="pre">advanced_settings.json</span></code> file and locate it in a folder. The path to this
+folder needs to be passed via the <code class="docutils literal notranslate"><span class="pre">saml_path</span></code> parameter.</p>
+<p>This is the <code class="docutils literal notranslate"><span class="pre">settings.json</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="o">//</span> <span class="n">If</span> <span class="n">strict</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">,</span> <span class="n">then</span> <span class="n">the</span> <span class="n">Python</span> <span class="n">Toolkit</span> <span class="n">will</span> <span class="n">reject</span> <span class="n">unsigned</span>
+  <span class="o">//</span> <span class="ow">or</span> <span class="n">unencrypted</span> <span class="n">messages</span> <span class="k">if</span> <span class="n">it</span> <span class="n">expects</span> <span class="n">them</span> <span class="n">to</span> <span class="n">be</span> <span class="n">signed</span> <span class="ow">or</span> <span class="n">encrypted</span><span class="o">.</span>
+  <span class="o">//</span> <span class="n">Also</span> <span class="n">it</span> <span class="n">will</span> <span class="n">reject</span> <span class="n">the</span> <span class="n">messages</span> <span class="k">if</span> <span class="n">the</span> <span class="n">SAML</span> <span class="n">standard</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">strictly</span>
+  <span class="o">//</span> <span class="n">followed</span><span class="o">.</span> <span class="n">Destination</span><span class="p">,</span> <span class="n">NameId</span><span class="p">,</span> <span class="n">Conditions</span> <span class="o">...</span> <span class="n">are</span> <span class="n">validated</span> <span class="n">too</span><span class="o">.</span>
+  <span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+
+  <span class="o">//</span> <span class="n">Enable</span> <span class="n">debug</span> <span class="n">mode</span> <span class="p">(</span><span class="n">outputs</span> <span class="n">errors</span><span class="p">)</span><span class="o">.</span>
+  <span class="s2">&quot;debug&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+
+  <span class="o">//</span> <span class="n">Service</span> <span class="n">Provider</span> <span class="n">Data</span> <span class="n">that</span> <span class="n">we</span> <span class="n">are</span> <span class="n">deploying</span><span class="o">.</span>
+  <span class="s2">&quot;sp&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">Identifier</span> <span class="n">of</span> <span class="n">the</span> <span class="n">SP</span> <span class="n">entity</span>  <span class="p">(</span><span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">URI</span><span class="p">)</span>
+      <span class="s2">&quot;entityId&quot;</span><span class="p">:</span> <span class="s2">&quot;https://&lt;sp_domain&gt;/metadata/&quot;</span><span class="p">,</span>
+      <span class="o">//</span> <span class="n">Specifies</span> <span class="n">info</span> <span class="n">about</span> <span class="n">where</span> <span class="ow">and</span> <span class="n">how</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">AuthnResponse</span><span class="o">&gt;</span> <span class="n">message</span> <span class="n">MUST</span> <span class="n">be</span>
+      <span class="o">//</span> <span class="n">returned</span> <span class="n">to</span> <span class="n">the</span> <span class="n">requester</span><span class="p">,</span> <span class="ow">in</span> <span class="n">this</span> <span class="n">case</span> <span class="n">our</span> <span class="n">SP</span><span class="o">.</span>
+      <span class="s2">&quot;assertionConsumerService&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="o">//</span> <span class="n">URL</span> <span class="n">Location</span> <span class="n">where</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">Response</span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">IdP</span> <span class="n">will</span> <span class="n">be</span> <span class="n">returned</span>
+          <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://&lt;sp_domain&gt;/?acs&quot;</span><span class="p">,</span>
+          <span class="o">//</span> <span class="n">SAML</span> <span class="n">protocol</span> <span class="n">binding</span> <span class="n">to</span> <span class="n">be</span> <span class="n">used</span> <span class="n">when</span> <span class="n">returning</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">Response</span><span class="o">&gt;</span>
+          <span class="o">//</span> <span class="n">message</span><span class="o">.</span> <span class="n">OneLogin</span> <span class="n">Toolkit</span> <span class="n">supports</span> <span class="n">this</span> <span class="n">endpoint</span> <span class="k">for</span> <span class="n">the</span>
+          <span class="o">//</span> <span class="n">HTTP</span><span class="o">-</span><span class="n">POST</span> <span class="n">binding</span> <span class="n">only</span><span class="o">.</span>
+          <span class="s2">&quot;binding&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST&quot;</span>
+      <span class="p">},</span>
+      <span class="o">//</span> <span class="n">Specifies</span> <span class="n">info</span> <span class="n">about</span> <span class="n">where</span> <span class="ow">and</span> <span class="n">how</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">Logout</span> <span class="n">Response</span><span class="o">&gt;</span> <span class="n">message</span> <span class="n">MUST</span> <span class="n">be</span>
+      <span class="o">//</span> <span class="n">returned</span> <span class="n">to</span> <span class="n">the</span> <span class="n">requester</span><span class="p">,</span> <span class="ow">in</span> <span class="n">this</span> <span class="n">case</span> <span class="n">our</span> <span class="n">SP</span><span class="o">.</span>
+      <span class="s2">&quot;singleLogoutService&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="o">//</span> <span class="n">URL</span> <span class="n">Location</span> <span class="n">where</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">Response</span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">IdP</span> <span class="n">will</span> <span class="n">be</span> <span class="n">returned</span>
+          <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://&lt;sp_domain&gt;/?sls&quot;</span><span class="p">,</span>
+          <span class="o">//</span> <span class="n">SAML</span> <span class="n">protocol</span> <span class="n">binding</span> <span class="n">to</span> <span class="n">be</span> <span class="n">used</span> <span class="n">when</span> <span class="n">returning</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">Response</span><span class="o">&gt;</span>
+          <span class="o">//</span> <span class="n">message</span><span class="o">.</span> <span class="n">OneLogin</span> <span class="n">Toolkit</span> <span class="n">supports</span> <span class="n">the</span> <span class="n">HTTP</span><span class="o">-</span><span class="n">Redirect</span> <span class="n">binding</span>
+          <span class="o">//</span> <span class="n">only</span> <span class="k">for</span> <span class="n">this</span> <span class="n">endpoint</span><span class="o">.</span>
+          <span class="s2">&quot;binding&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect&quot;</span>
+      <span class="p">},</span>
+      <span class="o">//</span> <span class="n">If</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">specify</span> <span class="n">requested</span> <span class="n">attributes</span><span class="p">,</span> <span class="nb">set</span> <span class="n">a</span>
+      <span class="o">//</span> <span class="n">attributeConsumingService</span><span class="o">.</span> <span class="n">nameFormat</span><span class="p">,</span> <span class="n">attributeValue</span> <span class="ow">and</span>
+      <span class="o">//</span> <span class="n">friendlyName</span> <span class="n">can</span> <span class="n">be</span> <span class="n">ommited</span>
+      <span class="s2">&quot;attributeConsumingService&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;serviceName&quot;</span><span class="p">:</span> <span class="s2">&quot;SP test&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;serviceDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;Test Service&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;requestedAttributes&quot;</span><span class="p">:</span> <span class="p">[</span>
+                  <span class="p">{</span>
+                      <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;isRequired&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+                      <span class="s2">&quot;nameFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;friendlyName&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;attributeValue&quot;</span><span class="p">:</span> <span class="p">[]</span>
+                  <span class="p">}</span>
+              <span class="p">]</span>
+      <span class="p">},</span>
+      <span class="o">//</span> <span class="n">Specifies</span> <span class="n">the</span> <span class="n">constraints</span> <span class="n">on</span> <span class="n">the</span> <span class="n">name</span> <span class="n">identifier</span> <span class="n">to</span> <span class="n">be</span> <span class="n">used</span> <span class="n">to</span>
+      <span class="o">//</span> <span class="n">represent</span> <span class="n">the</span> <span class="n">requested</span> <span class="n">subject</span><span class="o">.</span>
+      <span class="o">//</span> <span class="n">Take</span> <span class="n">a</span> <span class="n">look</span> <span class="n">on</span> <span class="n">src</span><span class="o">/</span><span class="n">onelogin</span><span class="o">/</span><span class="n">saml2</span><span class="o">/</span><span class="n">constants</span><span class="o">.</span><span class="n">py</span> <span class="n">to</span> <span class="n">see</span> <span class="n">the</span> <span class="n">NameIdFormat</span> <span class="n">that</span> <span class="n">are</span> <span class="n">supported</span><span class="o">.</span>
+      <span class="s2">&quot;NameIDFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified&quot;</span><span class="p">,</span>
+      <span class="o">//</span> <span class="n">Usually</span> <span class="n">x509cert</span> <span class="ow">and</span> <span class="n">privateKey</span> <span class="n">of</span> <span class="n">the</span> <span class="n">SP</span> <span class="n">are</span> <span class="n">provided</span> <span class="n">by</span> <span class="n">files</span> <span class="n">placed</span> <span class="n">at</span>
+      <span class="o">//</span> <span class="n">the</span> <span class="n">certs</span> <span class="n">folder</span><span class="o">.</span> <span class="n">But</span> <span class="n">we</span> <span class="n">can</span> <span class="n">also</span> <span class="n">provide</span> <span class="n">them</span> <span class="k">with</span> <span class="n">the</span> <span class="n">following</span> <span class="n">parameters</span>
+      <span class="s2">&quot;x509cert&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;privateKey&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+  <span class="p">},</span>
+
+  <span class="o">//</span> <span class="n">Identity</span> <span class="n">Provider</span> <span class="n">Data</span> <span class="n">that</span> <span class="n">we</span> <span class="n">want</span> <span class="n">connected</span> <span class="k">with</span> <span class="n">our</span> <span class="n">SP</span><span class="o">.</span>
+  <span class="s2">&quot;idp&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">Identifier</span> <span class="n">of</span> <span class="n">the</span> <span class="n">IdP</span> <span class="n">entity</span>  <span class="p">(</span><span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">URI</span><span class="p">)</span>
+      <span class="s2">&quot;entityId&quot;</span><span class="p">:</span> <span class="s2">&quot;https://app.onelogin.com/saml/metadata/&lt;onelogin_connector_id&gt;&quot;</span><span class="p">,</span>
+      <span class="o">//</span> <span class="n">SSO</span> <span class="n">endpoint</span> <span class="n">info</span> <span class="n">of</span> <span class="n">the</span> <span class="n">IdP</span><span class="o">.</span> <span class="p">(</span><span class="n">Authentication</span> <span class="n">Request</span> <span class="n">protocol</span><span class="p">)</span>
+      <span class="s2">&quot;singleSignOnService&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="o">//</span> <span class="n">URL</span> <span class="n">Target</span> <span class="n">of</span> <span class="n">the</span> <span class="n">IdP</span> <span class="n">where</span> <span class="n">the</span> <span class="n">Authentication</span> <span class="n">Request</span> <span class="n">Message</span>
+          <span class="o">//</span> <span class="n">will</span> <span class="n">be</span> <span class="n">sent</span><span class="o">.</span>
+          <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://app.onelogin.com/trust/saml2/http-post/sso/&lt;onelogin_connector_id&gt;&quot;</span><span class="p">,</span>
+          <span class="o">//</span> <span class="n">SAML</span> <span class="n">protocol</span> <span class="n">binding</span> <span class="n">to</span> <span class="n">be</span> <span class="n">used</span> <span class="n">when</span> <span class="n">returning</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">Response</span><span class="o">&gt;</span>
+          <span class="o">//</span> <span class="n">message</span><span class="o">.</span> <span class="n">OneLogin</span> <span class="n">Toolkit</span> <span class="n">supports</span> <span class="n">the</span> <span class="n">HTTP</span><span class="o">-</span><span class="n">Redirect</span> <span class="n">binding</span>
+          <span class="o">//</span> <span class="n">only</span> <span class="k">for</span> <span class="n">this</span> <span class="n">endpoint</span><span class="o">.</span>
+          <span class="s2">&quot;binding&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect&quot;</span>
+      <span class="p">},</span>
+      <span class="o">//</span> <span class="n">SLO</span> <span class="n">endpoint</span> <span class="n">info</span> <span class="n">of</span> <span class="n">the</span> <span class="n">IdP</span><span class="o">.</span>
+      <span class="s2">&quot;singleLogoutService&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="o">//</span> <span class="n">URL</span> <span class="n">Location</span> <span class="n">of</span> <span class="n">the</span> <span class="n">IdP</span> <span class="n">where</span> <span class="n">SLO</span> <span class="n">Request</span> <span class="n">will</span> <span class="n">be</span> <span class="n">sent</span><span class="o">.</span>
+          <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://app.onelogin.com/trust/saml2/http-redirect/slo/&lt;onelogin_connector_id&gt;&quot;</span><span class="p">,</span>
+          <span class="o">//</span> <span class="n">SAML</span> <span class="n">protocol</span> <span class="n">binding</span> <span class="n">to</span> <span class="n">be</span> <span class="n">used</span> <span class="n">when</span> <span class="n">returning</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">Response</span><span class="o">&gt;</span>
+          <span class="o">//</span> <span class="n">message</span><span class="o">.</span> <span class="n">OneLogin</span> <span class="n">Toolkit</span> <span class="n">supports</span> <span class="n">the</span> <span class="n">HTTP</span><span class="o">-</span><span class="n">Redirect</span> <span class="n">binding</span>
+          <span class="o">//</span> <span class="n">only</span> <span class="k">for</span> <span class="n">this</span> <span class="n">endpoint</span><span class="o">.</span>
+          <span class="s2">&quot;binding&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect&quot;</span>
+      <span class="p">},</span>
+      <span class="o">//</span> <span class="n">Public</span> <span class="n">x509</span> <span class="n">certificate</span> <span class="n">of</span> <span class="n">the</span> <span class="n">IdP</span>
+      <span class="s2">&quot;x509cert&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;onelogin_connector_cert&gt;&quot;</span>
+      <span class="o">/*</span>
+       <span class="o">*</span>  <span class="n">Instead</span> <span class="n">of</span> <span class="n">using</span> <span class="n">the</span> <span class="n">whole</span> <span class="n">x509cert</span> <span class="n">you</span> <span class="n">can</span> <span class="n">use</span> <span class="n">a</span> <span class="n">fingerprint</span> <span class="ow">in</span>
+       <span class="o">*</span>  <span class="n">order</span> <span class="n">to</span> <span class="n">validate</span> <span class="n">a</span> <span class="n">SAMLResponse</span><span class="o">.</span>
+       <span class="o">*</span>  <span class="p">(</span><span class="n">openssl</span> <span class="n">x509</span> <span class="o">-</span><span class="n">noout</span> <span class="o">-</span><span class="n">fingerprint</span> <span class="o">-</span><span class="ow">in</span> <span class="s2">&quot;idp.crt&quot;</span> <span class="n">to</span> <span class="n">generate</span> <span class="n">it</span><span class="p">,</span>
+       <span class="o">*</span>  <span class="ow">or</span> <span class="n">add</span> <span class="k">for</span> <span class="n">example</span> <span class="n">the</span> <span class="o">-</span><span class="n">sha256</span> <span class="p">,</span> <span class="o">-</span><span class="n">sha384</span> <span class="ow">or</span> <span class="o">-</span><span class="n">sha512</span> <span class="n">parameter</span><span class="p">)</span>
+       <span class="o">*</span>
+       <span class="o">*</span>  <span class="n">If</span> <span class="n">a</span> <span class="n">fingerprint</span> <span class="ow">is</span> <span class="n">provided</span><span class="p">,</span> <span class="n">then</span> <span class="n">the</span> <span class="n">certFingerprintAlgorithm</span> <span class="ow">is</span> <span class="n">required</span> <span class="ow">in</span> <span class="n">order</span> <span class="n">to</span>
+       <span class="o">*</span>  <span class="n">let</span> <span class="n">the</span> <span class="n">toolkit</span> <span class="n">know</span> <span class="n">which</span> <span class="n">algorithm</span> <span class="n">was</span> <span class="n">used</span><span class="o">.</span>
+       <span class="n">Possible</span> <span class="n">values</span><span class="p">:</span> <span class="n">sha1</span><span class="p">,</span> <span class="n">sha256</span><span class="p">,</span> <span class="n">sha384</span> <span class="ow">or</span> <span class="n">sha512</span>
+       <span class="o">*</span>  <span class="s1">&#39;sha1&#39;</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">default</span> <span class="n">value</span><span class="o">.</span>
+       <span class="o">*</span>
+       <span class="o">*</span>  <span class="n">Notice</span> <span class="n">that</span> <span class="k">if</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">validate</span> <span class="nb">any</span> <span class="n">SAML</span> <span class="n">Message</span> <span class="n">sent</span> <span class="n">by</span> <span class="n">the</span> <span class="n">HTTP</span><span class="o">-</span><span class="n">Redirect</span> <span class="n">binding</span><span class="p">,</span> <span class="n">you</span>
+       <span class="o">*</span>  <span class="n">will</span> <span class="n">need</span> <span class="n">to</span> <span class="n">provide</span> <span class="n">the</span> <span class="n">whole</span> <span class="n">x509cert</span><span class="o">.</span>
+       <span class="o">*/</span>
+      <span class="o">//</span> <span class="s2">&quot;certFingerprint&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="o">//</span> <span class="s2">&quot;certFingerprintAlgorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;sha1&quot;</span><span class="p">,</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Extra or additional settings can be defined in <code class="docutils literal notranslate"><span class="pre">advanced_settings.json</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">//</span> <span class="n">Security</span> <span class="n">settings</span>
+    <span class="s2">&quot;security&quot;</span><span class="p">:</span> <span class="p">{</span>
+
+        <span class="o">/**</span> <span class="n">signatures</span> <span class="ow">and</span> <span class="n">encryptions</span> <span class="n">offered</span> <span class="o">**/</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">that</span> <span class="n">the</span> <span class="n">nameID</span> <span class="n">of</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">samlp</span><span class="p">:</span><span class="n">logoutRequest</span><span class="o">&gt;</span> <span class="n">sent</span> <span class="n">by</span> <span class="n">this</span> <span class="n">SP</span>
+        <span class="o">//</span> <span class="n">will</span> <span class="n">be</span> <span class="n">encrypted</span><span class="o">.</span>
+        <span class="s2">&quot;nameIdEncrypted&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">whether</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">samlp</span><span class="p">:</span><span class="n">AuthnRequest</span><span class="o">&gt;</span> <span class="n">messages</span> <span class="n">sent</span> <span class="n">by</span> <span class="n">this</span> <span class="n">SP</span>
+        <span class="o">//</span> <span class="n">will</span> <span class="n">be</span> <span class="n">signed</span><span class="o">.</span>  <span class="p">[</span><span class="n">Metadata</span> <span class="n">of</span> <span class="n">the</span> <span class="n">SP</span> <span class="n">will</span> <span class="n">offer</span> <span class="n">this</span> <span class="n">info</span><span class="p">]</span>
+        <span class="s2">&quot;authnRequestsSigned&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">whether</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">samlp</span><span class="p">:</span><span class="n">logoutRequest</span><span class="o">&gt;</span> <span class="n">messages</span> <span class="n">sent</span> <span class="n">by</span> <span class="n">this</span> <span class="n">SP</span>
+        <span class="o">//</span> <span class="n">will</span> <span class="n">be</span> <span class="n">signed</span><span class="o">.</span>
+        <span class="s2">&quot;logoutRequestSigned&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">whether</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">samlp</span><span class="p">:</span><span class="n">logoutResponse</span><span class="o">&gt;</span> <span class="n">messages</span> <span class="n">sent</span> <span class="n">by</span> <span class="n">this</span> <span class="n">SP</span>
+        <span class="o">//</span> <span class="n">will</span> <span class="n">be</span> <span class="n">signed</span><span class="o">.</span>
+        <span class="s2">&quot;logoutResponseSigned&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">/*</span> <span class="n">Sign</span> <span class="n">the</span> <span class="n">Metadata</span>
+         <span class="n">false</span> <span class="o">||</span> <span class="n">true</span> <span class="p">(</span><span class="n">use</span> <span class="n">sp</span> <span class="n">certs</span><span class="p">)</span> <span class="o">||</span> <span class="p">{</span>
+                                            <span class="s2">&quot;keyFileName&quot;</span><span class="p">:</span> <span class="s2">&quot;metadata.key&quot;</span><span class="p">,</span>
+                                            <span class="s2">&quot;certFileName&quot;</span><span class="p">:</span> <span class="s2">&quot;metadata.crt&quot;</span>
+                                         <span class="p">}</span>
+        <span class="o">*/</span>
+        <span class="s2">&quot;signMetadata&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">/**</span> <span class="n">signatures</span> <span class="ow">and</span> <span class="n">encryptions</span> <span class="n">required</span> <span class="o">**/</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">a</span> <span class="n">requirement</span> <span class="k">for</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">samlp</span><span class="p">:</span><span class="n">Response</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">samlp</span><span class="p">:</span><span class="n">LogoutRequest</span><span class="o">&gt;</span>
+        <span class="o">//</span> <span class="ow">and</span> <span class="o">&lt;</span><span class="n">samlp</span><span class="p">:</span><span class="n">LogoutResponse</span><span class="o">&gt;</span> <span class="n">elements</span> <span class="n">received</span> <span class="n">by</span> <span class="n">this</span> <span class="n">SP</span> <span class="n">to</span> <span class="n">be</span> <span class="n">signed</span><span class="o">.</span>
+        <span class="s2">&quot;wantMessagesSigned&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">a</span> <span class="n">requirement</span> <span class="k">for</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">saml</span><span class="p">:</span><span class="n">Assertion</span><span class="o">&gt;</span> <span class="n">elements</span> <span class="n">received</span> <span class="n">by</span>
+        <span class="o">//</span> <span class="n">this</span> <span class="n">SP</span> <span class="n">to</span> <span class="n">be</span> <span class="n">signed</span><span class="o">.</span> <span class="p">[</span><span class="n">Metadata</span> <span class="n">of</span> <span class="n">the</span> <span class="n">SP</span> <span class="n">will</span> <span class="n">offer</span> <span class="n">this</span> <span class="n">info</span><span class="p">]</span>
+        <span class="s2">&quot;wantAssertionsSigned&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">a</span> <span class="n">requirement</span> <span class="k">for</span> <span class="n">the</span> <span class="o">&lt;</span><span class="n">saml</span><span class="p">:</span><span class="n">Assertion</span><span class="o">&gt;</span>
+        <span class="o">//</span> <span class="n">elements</span> <span class="n">received</span> <span class="n">by</span> <span class="n">this</span> <span class="n">SP</span> <span class="n">to</span> <span class="n">be</span> <span class="n">encrypted</span><span class="o">.</span>
+        <span class="s2">&quot;wantAssertionsEncrypted&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">a</span> <span class="n">requirement</span> <span class="k">for</span> <span class="n">the</span> <span class="n">NameID</span> <span class="n">element</span> <span class="n">on</span> <span class="n">the</span> <span class="n">SAMLResponse</span>
+        <span class="o">//</span> <span class="n">received</span> <span class="n">by</span> <span class="n">this</span> <span class="n">SP</span> <span class="n">to</span> <span class="n">be</span> <span class="n">present</span><span class="o">.</span>
+        <span class="s2">&quot;wantNameId&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">a</span> <span class="n">requirement</span> <span class="k">for</span> <span class="n">the</span> <span class="n">NameID</span> <span class="n">received</span> <span class="n">by</span>
+        <span class="o">//</span> <span class="n">this</span> <span class="n">SP</span> <span class="n">to</span> <span class="n">be</span> <span class="n">encrypted</span><span class="o">.</span>
+        <span class="s2">&quot;wantNameIdEncrypted&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Indicates</span> <span class="n">a</span> <span class="n">requirement</span> <span class="k">for</span> <span class="n">the</span> <span class="n">AttributeStatement</span> <span class="n">element</span>
+        <span class="s2">&quot;wantAttributeStatement&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Authentication</span> <span class="n">context</span><span class="o">.</span>
+        <span class="o">//</span> <span class="n">Set</span> <span class="n">to</span> <span class="n">false</span> <span class="ow">and</span> <span class="n">no</span> <span class="n">AuthContext</span> <span class="n">will</span> <span class="n">be</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">AuthNRequest</span><span class="p">,</span>
+        <span class="o">//</span> <span class="n">Set</span> <span class="n">true</span> <span class="ow">or</span> <span class="n">don</span><span class="s1">&#39;t present thi parameter and you will get an AuthContext &#39;</span><span class="n">exact</span><span class="s1">&#39; &#39;</span><span class="n">urn</span><span class="p">:</span><span class="n">oasis</span><span class="p">:</span><span class="n">names</span><span class="p">:</span><span class="n">tc</span><span class="p">:</span><span class="n">SAML</span><span class="p">:</span><span class="mf">2.0</span><span class="p">:</span><span class="n">ac</span><span class="p">:</span><span class="n">classes</span><span class="p">:</span><span class="n">PasswordProtectedTransport</span><span class="s1">&#39;</span>
+        <span class="o">//</span> <span class="n">Set</span> <span class="n">an</span> <span class="n">array</span> <span class="k">with</span> <span class="n">the</span> <span class="n">possible</span> <span class="n">auth</span> <span class="n">context</span> <span class="n">values</span><span class="p">:</span> <span class="n">array</span> <span class="p">(</span><span class="s1">&#39;urn:oasis:names:tc:SAML:2.0:ac:classes:Password&#39;</span><span class="p">,</span> <span class="s1">&#39;urn:oasis:names:tc:SAML:2.0:ac:classes:X509&#39;</span><span class="p">),</span>
+        <span class="s2">&quot;requestedAuthnContext&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="o">//</span> <span class="n">Allows</span> <span class="n">the</span> <span class="n">authn</span> <span class="n">comparison</span> <span class="n">parameter</span> <span class="n">to</span> <span class="n">be</span> <span class="nb">set</span><span class="p">,</span> <span class="n">defaults</span> <span class="n">to</span> <span class="s1">&#39;exact&#39;</span> <span class="k">if</span> <span class="n">the</span> <span class="n">setting</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">present</span><span class="o">.</span>
+        <span class="s2">&quot;requestedAuthnContextComparison&quot;</span><span class="p">:</span> <span class="s2">&quot;exact&quot;</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">In</span> <span class="n">some</span> <span class="n">environment</span> <span class="n">you</span> <span class="n">will</span> <span class="n">need</span> <span class="n">to</span> <span class="nb">set</span> <span class="n">how</span> <span class="n">long</span> <span class="n">the</span> <span class="n">published</span> <span class="n">metadata</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Service</span> <span class="n">Provider</span> <span class="n">gonna</span> <span class="n">be</span> <span class="n">valid</span><span class="o">.</span>
+        <span class="o">//</span> <span class="ow">is</span> <span class="n">possible</span> <span class="n">to</span> <span class="ow">not</span> <span class="nb">set</span> <span class="n">the</span> <span class="mi">2</span> <span class="n">following</span> <span class="n">parameters</span> <span class="p">(</span><span class="ow">or</span> <span class="nb">set</span> <span class="n">to</span> <span class="n">null</span><span class="p">)</span> <span class="ow">and</span> <span class="n">default</span> <span class="n">values</span> <span class="n">will</span> <span class="n">be</span> <span class="nb">set</span> <span class="p">(</span><span class="mi">2</span> <span class="n">days</span><span class="p">,</span> <span class="mi">1</span> <span class="n">week</span><span class="p">)</span>
+        <span class="o">//</span> <span class="n">Provide</span> <span class="n">the</span> <span class="n">desire</span> <span class="n">TimeStamp</span><span class="p">,</span> <span class="k">for</span> <span class="n">example</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">26</span><span class="n">T20</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="n">Z</span>
+        <span class="s2">&quot;metadataValidUntil&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+        <span class="o">//</span> <span class="n">Provide</span> <span class="n">the</span> <span class="n">desire</span> <span class="n">Duration</span><span class="p">,</span> <span class="k">for</span> <span class="n">example</span> <span class="n">PT518400S</span> <span class="p">(</span><span class="mi">6</span> <span class="n">days</span><span class="p">)</span>
+        <span class="s2">&quot;metadataCacheDuration&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Algorithm</span> <span class="n">that</span> <span class="n">the</span> <span class="n">toolkit</span> <span class="n">will</span> <span class="n">use</span> <span class="n">on</span> <span class="n">signing</span> <span class="n">process</span><span class="o">.</span> <span class="n">Options</span><span class="p">:</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2000/09/xmldsig#rsa-sha1&#39;</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2000/09/xmldsig#dsa-sha1&#39;</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2001/04/xmldsig-more#rsa-sha256&#39;</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2001/04/xmldsig-more#rsa-sha384&#39;</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2001/04/xmldsig-more#rsa-sha512&#39;</span>
+        <span class="s2">&quot;signatureAlgorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;</span><span class="p">,</span>
+
+        <span class="o">//</span> <span class="n">Algorithm</span> <span class="n">that</span> <span class="n">the</span> <span class="n">toolkit</span> <span class="n">will</span> <span class="n">use</span> <span class="n">on</span> <span class="n">digest</span> <span class="n">process</span><span class="o">.</span> <span class="n">Options</span><span class="p">:</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2000/09/xmldsig#sha1&#39;</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2001/04/xmlenc#sha256&#39;</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2001/04/xmldsig-more#sha384&#39;</span>
+        <span class="o">//</span>    <span class="s1">&#39;http://www.w3.org/2001/04/xmlenc#sha512&#39;</span>
+        <span class="s1">&#39;digestAlgorithm&#39;</span><span class="p">:</span> <span class="s2">&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;</span>
+    <span class="p">},</span>
+
+    <span class="o">//</span> <span class="n">Contact</span> <span class="n">information</span> <span class="n">template</span><span class="p">,</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">recommended</span> <span class="n">to</span> <span class="n">suply</span> <span class="n">a</span>
+    <span class="o">//</span> <span class="n">technical</span> <span class="ow">and</span> <span class="n">support</span> <span class="n">contacts</span><span class="o">.</span>
+    <span class="s2">&quot;contactPerson&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;technical&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;technical_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emailAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;technical@example.com&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;support&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;support_name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emailAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;support@example.com&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="o">//</span> <span class="n">Organization</span> <span class="n">information</span> <span class="n">template</span><span class="p">,</span> <span class="n">the</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">en_US</span> <span class="n">lang</span> <span class="ow">is</span>
+    <span class="o">//</span> <span class="n">recomended</span><span class="p">,</span> <span class="n">add</span> <span class="n">more</span> <span class="k">if</span> <span class="n">required</span><span class="o">.</span>
+    <span class="s2">&quot;organization&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;en-US&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;sp_test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;displayname&quot;</span><span class="p">:</span> <span class="s2">&quot;SP test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://sp.example.com&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the security section you can specify, how the SP will handle the messages
+and assertions. Talk to the admin of the IdP and ask them what the IdP expects.</p>
+<p>If your environment requires support for signing or encryption, add a <code class="docutils literal notranslate"><span class="pre">certs</span></code>
+folder to your <code class="docutils literal notranslate"><span class="pre">saml_path</span></code>. This folder my contain the x509 certificate and
+the private key that the SP will use.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">sp.crt</span></code> - The public certificate of the SP</li>
+<li><code class="docutils literal notranslate"><span class="pre">sp.key</span></code> - The private key of the SP.</li>
+</ul>
+<p>For further information about the configuration of python3-saml have a look
+into their <a class="reference external" href="https://github.com/onelogin/python3-saml/blob/master/README.md">Documentation</a>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, HZDR
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v0.1
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="usage.html">v0.1</a></dd>
+            <dd><a href="../v0.1.1/usage.html">v0.1.1</a></dd>
+            <dd><a href="../v0.1.2/usage.html">v0.1.2</a></dd>
+            <dd><a href="../v0.1.3/usage.html">v0.1.3</a></dd>
+            <dd><a href="../v0.1.4/usage.html">v0.1.4</a></dd>
+            <dd><a href="../v0.1.5/usage.html">v0.1.5</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../master/usage.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

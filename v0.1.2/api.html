@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API &mdash; shibboleth-authenticator 0.1.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="How to use" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> shibboleth-authenticator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">How to use</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-shibboleth_authenticator.handlers">Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-shibboleth_authenticator.views">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-shibboleth_authenticator.utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">shibboleth-authenticator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-shibboleth_authenticator.handlers">
+<span id="handlers"></span><h2>Handlers<a class="headerlink" href="#module-shibboleth_authenticator.handlers" title="Permalink to this headline">¶</a></h2>
+<p>Handlers for shibboleth endpoints.</p>
+<dl class="function">
+<dt id="shibboleth_authenticator.handlers.authorized_signup_handler">
+<code class="descclassname">shibboleth_authenticator.handlers.</code><code class="descname">authorized_signup_handler</code><span class="sig-paren">(</span><em>auth</em>, <em>remote=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/handlers.html#authorized_signup_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.handlers.authorized_signup_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle sign-in/up functionality.</p>
+<p>Checks if user is already registered. If not registered, the function
+registers a new user and authenticates the new user. If there already
+exists a user object in the database, the user is only authenticated and
+logged in.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>remote</strong> – The remote application.</li>
+<li><strong>resp</strong> – The response.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Redirect response.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-shibboleth_authenticator.views">
+<span id="views"></span><h2>Views<a class="headerlink" href="#module-shibboleth_authenticator.views" title="Permalink to this headline">¶</a></h2>
+<p>Blueprint for handling Shibboleth callbacks.</p>
+<dl class="function">
+<dt id="shibboleth_authenticator.views.authorized">
+<code class="descclassname">shibboleth_authenticator.views.</code><code class="descname">authorized</code><span class="sig-paren">(</span><em>remote_app=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/views.html#authorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.views.authorized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize handler callback.</p>
+<p>This function is called when the user is redirected from the IdP to the
+web application. It handles the authorization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>remote_app</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The remote application key name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Return redirect response or abort in case of failure.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://flask.pocoo.org/docs/latest/api/#flask.Response" title="(in Flask v1.1)">flask.Response</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="shibboleth_authenticator.views.init_saml_auth">
+<code class="descclassname">shibboleth_authenticator.views.</code><code class="descname">init_saml_auth</code><span class="sig-paren">(</span><em>req</em>, <em>saml_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/views.html#init_saml_auth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.views.init_saml_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init SAML authentication for remote application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – </li>
+<li><strong>saml_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the configuration files for python3-saml.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="shibboleth_authenticator.views.login">
+<code class="descclassname">shibboleth_authenticator.views.</code><code class="descname">login</code><span class="sig-paren">(</span><em>remote_app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/views.html#login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.views.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirect user to remote application for authentication.</p>
+<p>This function redirects the user to the IdP for authorization. After having
+authorized the IdP redirects the user back to this web application as
+configured in your <code class="docutils literal notranslate"><span class="pre">saml_path</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>remote_app</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The remote application key name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>Return redirect response to IdP or abort in case</dt>
+<dd>of failure.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://flask.pocoo.org/docs/latest/api/#flask.Response" title="(in Flask v1.1)">flask.Response</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="shibboleth_authenticator.views.metadata">
+<code class="descclassname">shibboleth_authenticator.views.</code><code class="descname">metadata</code><span class="sig-paren">(</span><em>remote_app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/views.html#metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.views.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create remote application specific metadata xml for ServiceProvider.</p>
+<p>The metadata-XML response is created using the settings provided in the
+remote app’s specific <code class="docutils literal notranslate"><span class="pre">saml_path</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>remote_app</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The remote application key name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The SP’s metadata xml.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://flask.pocoo.org/docs/latest/api/#flask.Response" title="(in Flask v1.1)">flask.Response</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="shibboleth_authenticator.views.prepare_flask_request">
+<code class="descclassname">shibboleth_authenticator.views.</code><code class="descname">prepare_flask_request</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/views.html#prepare_flask_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.views.prepare_flask_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare flask request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> (<a class="reference external" href="http://flask.pocoo.org/docs/latest/api/#flask.Request" title="(in Flask v1.1)"><em>flask.Request</em></a>) – The Flask request.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns dictionary used in <a class="reference internal" href="#shibboleth_authenticator.views.init_saml_auth" title="shibboleth_authenticator.views.init_saml_auth"><code class="xref py py-func docutils literal notranslate"><span class="pre">init_saml_auth()</span></code></a>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-shibboleth_authenticator.utils">
+<span id="utils"></span><h2>Utils<a class="headerlink" href="#module-shibboleth_authenticator.utils" title="Permalink to this headline">¶</a></h2>
+<p>Utility methods to help find, authenticate or register a remote user.</p>
+<dl class="function">
+<dt id="shibboleth_authenticator.utils.get_account_info">
+<code class="descclassname">shibboleth_authenticator.utils.</code><code class="descname">get_account_info</code><span class="sig-paren">(</span><em>attributes</em>, <em>remote_app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/utils.html#get_account_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.utils.get_account_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return account info for remote user.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="shibboleth_authenticator.utils.get_safe_redirect_target">
+<code class="descclassname">shibboleth_authenticator.utils.</code><code class="descname">get_safe_redirect_target</code><span class="sig-paren">(</span><em>arg='next'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/shibboleth_authenticator/utils.html#get_safe_redirect_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#shibboleth_authenticator.utils.get_safe_redirect_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get URL to redirect to and ensure that it is local.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>arg</strong> – URL argument.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The redirect target or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="usage.html" class="btn btn-neutral float-left" title="How to use" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, HZDR
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: v0.1.2
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../v0.1/api.html">v0.1</a></dd>
+            <dd><a href="../v0.1.1/api.html">v0.1.1</a></dd>
+            <dd><a href="api.html">v0.1.2</a></dd>
+            <dd><a href="../v0.1.3/api.html">v0.1.3</a></dd>
+            <dd><a href="../v0.1.4/api.html">v0.1.4</a></dd>
+            <dd><a href="../v0.1.5/api.html">v0.1.5</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="../master/api.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

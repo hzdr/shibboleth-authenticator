@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>shibboleth_authenticator.views &mdash; shibboleth-authenticator 0.1.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> shibboleth-authenticator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">How to use</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">shibboleth-authenticator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>shibboleth_authenticator.views</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for shibboleth_authenticator.views</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of the shibboleth-authenticator module for Invenio.</span>
+<span class="c1"># Copyright (C) 2017  Helmholtz-Zentrum Dresden-Rossendorf</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&quot;&quot;&quot;Blueprint for handling Shibboleth callbacks.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="p">(</span><span class="n">Blueprint</span><span class="p">,</span> <span class="n">abort</span><span class="p">,</span> <span class="n">current_app</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span>
+                   <span class="n">request</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">flask_login</span> <span class="k">import</span> <span class="n">current_user</span><span class="p">,</span> <span class="n">logout_user</span>
+<span class="kn">from</span> <span class="nn">invenio_oauthclient.handlers</span> <span class="k">import</span> <span class="n">set_session_next_url</span>
+<span class="kn">from</span> <span class="nn">itsdangerous</span> <span class="k">import</span> <span class="n">BadData</span><span class="p">,</span> <span class="n">TimedJSONWebSignatureSerializer</span>
+<span class="kn">from</span> <span class="nn">onelogin.saml2.auth</span> <span class="k">import</span> <span class="n">OneLogin_Saml2_Auth</span><span class="p">,</span> <span class="n">OneLogin_Saml2_Error</span>
+<span class="kn">from</span> <span class="nn">werkzeug.local</span> <span class="k">import</span> <span class="n">LocalProxy</span>
+
+<span class="kn">from</span> <span class="nn">._compat</span> <span class="k">import</span> <span class="n">_create_identifier</span><span class="p">,</span> <span class="n">urlparse</span>
+<span class="kn">from</span> <span class="nn">.handlers</span> <span class="k">import</span> <span class="n">authorized_signup_handler</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">get_safe_redirect_target</span>
+
+<span class="n">blueprint</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span>
+    <span class="s1">&#39;shibboleth_authenticator&#39;</span><span class="p">,</span>
+    <span class="vm">__name__</span><span class="p">,</span>
+    <span class="n">url_prefix</span><span class="o">=</span><span class="s1">&#39;/shibboleth&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">serializer</span> <span class="o">=</span> <span class="n">LocalProxy</span><span class="p">(</span>
+    <span class="k">lambda</span><span class="p">:</span> <span class="n">TimedJSONWebSignatureSerializer</span><span class="p">(</span>
+        <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">],</span>
+        <span class="n">expires_in</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_STATE_EXPIRES&#39;</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="init_saml_auth"><a class="viewcode-back" href="../../api.html#shibboleth_authenticator.views.init_saml_auth">[docs]</a><span class="k">def</span> <span class="nf">init_saml_auth</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">saml_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Init SAML authentication for remote application.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        req(dict):</span>
+<span class="sd">        saml_path(str): The path to the configuration files for python3-saml.</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="n">OneLogin_Saml2_Auth</span><span class="p">(</span>
+        <span class="n">req</span><span class="p">,</span>
+        <span class="n">custom_base_path</span><span class="o">=</span><span class="n">saml_path</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">auth</span></div>
+
+
+<div class="viewcode-block" id="prepare_flask_request"><a class="viewcode-back" href="../../api.html#shibboleth_authenticator.views.prepare_flask_request">[docs]</a><span class="k">def</span> <span class="nf">prepare_flask_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepare flask request.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request(flask.Request): The Flask request.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Returns dictionary used in :func:`init_saml_auth`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url_data</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="c1"># If server is behind proxys or balancers use the HTTP_X_FORWARDED fields.</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;https&#39;</span><span class="p">:</span> <span class="s1">&#39;on&#39;</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;https&#39;</span> <span class="k">else</span> <span class="s1">&#39;off&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;http_host&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
+        <span class="s1">&#39;server_port&#39;</span><span class="p">:</span> <span class="n">url_data</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+        <span class="s1">&#39;script_name&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+        <span class="s1">&#39;get_data&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+        <span class="s1">&#39;X-Forwarded-for&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;post_data&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../../api.html#shibboleth_authenticator.views.login">[docs]</a><span class="nd">@blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login/&lt;remote_app&gt;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">remote_app</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Redirect user to remote application for authentication.</span>
+
+<span class="sd">    This function redirects the user to the IdP for authorization. After having</span>
+<span class="sd">    authorized the IdP redirects the user back to this web application as</span>
+<span class="sd">    configured in your ``saml_path``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        remote_app (str): The remote application key name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        flask.Response: Return redirect response to IdP or abort in case</span>
+<span class="sd">                        of failure.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">remote_app</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_REMOTE_APPS&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_REMOTE_APPS&#39;</span><span class="p">][</span><span class="n">remote_app</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;saml_path&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">&#39;Bad server configuration.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Store next parameter in state token</span>
+    <span class="n">next_param</span> <span class="o">=</span> <span class="n">get_safe_redirect_target</span><span class="p">(</span><span class="n">arg</span><span class="o">=</span><span class="s1">&#39;next&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">next_param</span><span class="p">:</span>
+        <span class="n">next_param</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span>
+    <span class="n">state_token</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+        <span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="n">remote_app</span><span class="p">,</span>
+        <span class="s1">&#39;next&#39;</span><span class="p">:</span> <span class="n">next_param</span><span class="p">,</span>
+        <span class="s1">&#39;sid&#39;</span><span class="p">:</span> <span class="n">_create_identifier</span><span class="p">(),</span>
+    <span class="p">})</span>
+
+    <span class="n">saml_path</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;saml_path&#39;</span><span class="p">]</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">prepare_flask_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">init_saml_auth</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">saml_path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">OneLogin_Saml2_Error</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">auth</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">state_token</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="authorized"><a class="viewcode-back" href="../../api.html#shibboleth_authenticator.views.authorized">[docs]</a><span class="nd">@blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/authorized/&lt;remote_app&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">authorized</span><span class="p">(</span><span class="n">remote_app</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Authorize handler callback.</span>
+
+<span class="sd">    This function is called when the user is redirected from the IdP to the</span>
+<span class="sd">    web application. It handles the authorization.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        remote_app (str): The remote application key name.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        flask.Response: Return redirect response or abort in case of failure.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="n">logout_user</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">remote_app</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_REMOTE_APPS&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_REMOTE_APPS&#39;</span><span class="p">][</span><span class="n">remote_app</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;saml_path&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">&#39;Bad server configuration.&#39;</span><span class="p">)</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">prepare_flask_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">init_saml_auth</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;saml_path&#39;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="n">OneLogin_Saml2_Error</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">auth</span><span class="o">.</span><span class="n">process_response</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">OneLogin_Saml2_Error</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">get_errors</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">auth</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;RelayState&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">:</span>
+            <span class="c1"># Get state token stored in RelayState</span>
+            <span class="n">state_token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;RelayState&#39;</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">state_token</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span>
+                <span class="c1"># Check authenticity and integrity of state and decode the</span>
+                <span class="c1"># values.</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">state_token</span><span class="p">)</span>
+                <span class="c1"># Verify that state is for this session, app and that next</span>
+                <span class="c1"># parameter have not been modified.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;sid&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">_create_identifier</span><span class="p">()</span> <span class="ow">or</span>
+                        <span class="n">state</span><span class="p">[</span><span class="s1">&#39;app&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">remote_app</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span>
+                <span class="c1"># Store next url</span>
+                <span class="n">set_session_next_url</span><span class="p">(</span><span class="n">remote_app</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">BadData</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OAUTHCLIENT_STATE_ENABLED&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> \
+                   <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">debug</span> <span class="ow">or</span> <span class="n">current_app</span><span class="o">.</span><span class="n">testing</span><span class="p">)):</span>
+                    <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">authorized_signup_handler</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="n">remote_app</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">403</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="metadata"><a class="viewcode-back" href="../../api.html#shibboleth_authenticator.views.metadata">[docs]</a><span class="nd">@blueprint</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/metadata/&lt;remote_app&gt;&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="n">remote_app</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create remote application specific metadata xml for ServiceProvider.</span>
+
+<span class="sd">    The metadata-XML response is created using the settings provided in the</span>
+<span class="sd">    remote app&#39;s specific ``saml_path``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        remote_app (str): The remote application key name.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        flask.Response: The SP&#39;s metadata xml.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">remote_app</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_REMOTE_APPS&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SHIBBOLETH_REMOTE_APPS&#39;</span><span class="p">][</span><span class="n">remote_app</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;saml_path&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">&#39;Bad server configuration.&#39;</span><span class="p">)</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">prepare_flask_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">init_saml_auth</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;saml_path&#39;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="n">OneLogin_Saml2_Error</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get_sp_metadata</span><span class="p">()</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">validate_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;text/xml&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">),</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">resp</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, HZDR
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Other Versions</span>
+        v: master
+        <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="../../../v0.1/index.html">v0.1</a></dd>
+            <dd><a href="../../../v0.1.1/index.html">v0.1.1</a></dd>
+            <dd><a href="../../../v0.1.2/index.html">v0.1.2</a></dd>
+            <dd><a href="../../../v0.1.3/index.html">v0.1.3</a></dd>
+            <dd><a href="../../../v0.1.4/index.html">v0.1.4</a></dd>
+            <dd><a href="../../../v0.1.5/index.html">v0.1.5</a></dd>
+        </dl>
+        <dl>
+            <dt>Branches</dt>
+            <dd><a href="views.html">master</a></dd>
+        </dl>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
