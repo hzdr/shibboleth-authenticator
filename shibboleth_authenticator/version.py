@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of the shibboleth-authenticator module for Invenio.
-# Copyright (C) 2017  Helmholtz-Zentrum Dresden-Rossendorf
+# Copyright (C) 2017-2019 Helmholtz-Zentrum Dresden-Rossendorf
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,4 +23,4 @@ and parsed by ``setup.py``.
 """
 
 
-__version__ = '0.1.4.post'
+__version__ = '0.1.5'
