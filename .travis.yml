@@ -106,7 +106,7 @@ jobs:
       python: "3.6"
       env: REQUIREMENTS=release EXTRAS=all,sqlite SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
       script:
-        - pip install -U git+https://github.com/leokoppel/sphinxcontrib-versioning.git#egg=sphinxcontrib-versioning
+        - pip install -U git+https://github.com/sphinxcontrib-versioning-ng/sphinxcontrib-versioning.git#egg=sphinxcontrib-versioning
         - sphinx-versioning build -T -W "^v[0-9\.]*$" -w master docs/source docs/build/html
       before_deploy:
         - "touch docs/build/html/.nojekyll"

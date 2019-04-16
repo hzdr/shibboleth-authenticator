@@ -57,7 +57,8 @@ install_requires = [
 extras_require = {
     'docs': [
         'recommonmark>=0.4.0',
-        'Sphinx>=1.5.1',
+        'Sphinx>=1.5.1,<2.0',  # FIXME: Remove pinning when
+                               # sphinx-contrib-versioning is compatible.
     ],
     'mysql': [
         'invenio-oauthclient[mysql]>=1.0.0',
