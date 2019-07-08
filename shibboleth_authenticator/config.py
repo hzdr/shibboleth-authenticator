@@ -63,8 +63,8 @@ following keys:
   the response of the IDP to the keys required by shibboleth-authenticator.
   The required keys are: ``email``, ``fullname``, ``username``
 
-Example:
-
+Example
+^^^^^^^
 .. code-block:: python
 
     SHIBBOLETH_REMOTE_APPS = dict(
@@ -82,7 +82,6 @@ Example:
 
 Configure python3-saml
 ^^^^^^^^^^^^^^^^^^^^^^
-
 For using python3-saml you need to configure the Service Provider's (SP) and
 the Identity Provider's (IDP) info. Futhermore, you can configure advanced
 security issues like signatures and encryption.
@@ -114,6 +113,7 @@ the private key that the SP will use.
 For further information about the configuration of python3-saml have a look
 into their `Documentation
 <https://github.com/onelogin/python3-saml/blob/master/README.md>`_.
+
 """
 
 SHIBBOLETH_REMOTE_APPS = {}
