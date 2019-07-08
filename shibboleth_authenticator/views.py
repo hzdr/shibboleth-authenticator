@@ -56,6 +56,7 @@ def init_saml_auth(req, saml_path):
         saml_path(str): The path to the configuration files for python3-saml.
 
     Returns:
+        The SAML SP instance.
 
     """
     auth = OneLogin_Saml2_Auth(
