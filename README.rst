@@ -17,7 +17,7 @@
 ..
 
 .. image:: https://img.shields.io/travis/hzdr/shibboleth-authenticator/master.svg
-        :target: https://travis-ci.org/hzdr/shibboleth-authenticator
+        :target: https://travis-ci.com/hzdr/shibboleth-authenticator
 
 .. image:: https://img.shields.io/coveralls/hzdr/shibboleth-authenticator/master.svg
         :target: https://coveralls.io/github/hzdr/shibboleth-authenticator
